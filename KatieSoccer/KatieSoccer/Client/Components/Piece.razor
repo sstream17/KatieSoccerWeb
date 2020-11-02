@@ -1,4 +1,4 @@
-﻿<div class="piece" style="@style" />
+﻿<div class="piece" style="@style" @onclick="AddForce"/>
 
 @code
 {
@@ -6,4 +6,9 @@
     public PieceModel Model { get; set; }
 
     string style => $"top: {Model.Position.Y}px; left: {Model.Position.X}px; background: {Model.Color};";
+
+    void AddForce()
+    {
+        Model.AddForce(new Vector2(10, 5));
+    }
 }

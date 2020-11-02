@@ -53,25 +53,10 @@ namespace KatieSoccer.Client.Scripts
             };
         }
 
-        private float speed = 15;
-
         public async Task Update()
         {
             while (true)
             {
-                TeamOnePieces[0].Position = new Vector2(
-                    TeamOnePieces[0].Position.X + speed,
-                    TeamOnePieces[0].Position.Y + speed);
-
-                if (speed > 0)
-                {
-                    speed -= 0.1f;
-                }
-                else
-                {
-                    speed = 0;
-                }
-
                 OnUpdate?.Invoke(this, EventArgs.Empty);
                 await Task.Delay(10);
             }
