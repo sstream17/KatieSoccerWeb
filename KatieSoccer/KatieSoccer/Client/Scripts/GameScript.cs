@@ -18,17 +18,17 @@ namespace KatieSoccer.Client.Scripts
             {
                 new PieceModel
                 {
-                    Position = new Position(100, 100),
+                    Position = new Vector2(100, 100),
                     Color = "#CC0000"
                 },
                 new PieceModel
                 {
-                    Position = new Position(300, 300),
+                    Position = new Vector2(300, 300),
                     Color = "#CC0000"
                 },
                 new PieceModel
                 {
-                    Position = new Position(500, 500),
+                    Position = new Vector2(500, 500),
                     Color = "#CC0000"
                 }
             };
@@ -37,17 +37,17 @@ namespace KatieSoccer.Client.Scripts
             {
                 new PieceModel
                 {
-                    Position = new Position(1100, 100),
+                    Position = new Vector2(1100, 100),
                     Color = "#2499F2"
                 },
                 new PieceModel
                 {
-                    Position = new Position(900, 300),
+                    Position = new Vector2(900, 300),
                     Color = "#2499F2"
                 },
                 new PieceModel
                 {
-                    Position = new Position(700, 500),
+                    Position = new Vector2(700, 500),
                     Color = "#2499F2"
                 }
             };
@@ -59,7 +59,7 @@ namespace KatieSoccer.Client.Scripts
         {
             while (true)
             {
-                TeamOnePieces[0].Position = new Position(
+                TeamOnePieces[0].Position = new Vector2(
                     TeamOnePieces[0].Position.X + speed,
                     TeamOnePieces[0].Position.Y + speed);
 
