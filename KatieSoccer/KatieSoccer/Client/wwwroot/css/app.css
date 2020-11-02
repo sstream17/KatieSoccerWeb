@@ -7,6 +7,26 @@
     background-color: #1b7e39;
 }
 
+.ball {
+    position: absolute;
+    background-color: white;
+    height: 80px;
+    width: 80px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border-radius: 50px;
+}
+
+.piece {
+    position: absolute;
+    background-color: #fb3f3f;
+    height: 100px;
+    width: 100px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
