@@ -1,7 +1,33 @@
-﻿<div class="game-container">
+﻿@if (GameScript == null)
+{
+    <em>Loading...</em>
+}
+else
+{
+    <div class="game-container">
 
-    <Piece />
+        @foreach (var piece in GameScript.TeamOnePieces)
+        {
+            <Piece Model="piece" />
+        }
 
-    <Ball />
+        @foreach (var piece in GameScript.TeamTwoPieces)
+        {
+            <Piece Model="piece" />
+        }
 
-</div>
+        <Ball />
+
+    </div>
+}
+
+@code
+{
+    GameScript GameScript;
+
+    protected override void OnInitialized()
+    {
+        GameScript = new GameScript();
+        base.OnInitialized();
+    }
+}

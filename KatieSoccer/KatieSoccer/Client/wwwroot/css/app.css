@@ -19,7 +19,6 @@
 
 .piece {
     position: absolute;
-    background-color: #fb3f3f;
     height: 100px;
     width: 100px;
     -moz-border-radius: 50px;
