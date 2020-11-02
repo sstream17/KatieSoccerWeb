@@ -5,8 +5,8 @@ namespace KatieSoccer.Client.Models
 {
     public class GameObject
     {
-        public virtual Vector2 Position { get; set; }
-        public virtual Vector2 Velocity { get; set; }
+        public Vector2 Position { get; set; }
+        public Vector2 Velocity { get; set; }
 
         public GameObject()
         {
