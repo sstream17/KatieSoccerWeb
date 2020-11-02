@@ -5,6 +5,7 @@ namespace KatieSoccer.Client.Models
 {
     public class GameObject
     {
+        public virtual Vector2 Position { get; set; }
         public virtual Vector2 Velocity { get; set; }
 
         public GameObject()
@@ -26,6 +27,8 @@ namespace KatieSoccer.Client.Models
 
                     var force = -unitVector * 0.1f;
                     AddForce(force);
+
+                    Position += Velocity;
                 }
                 else
                 {
