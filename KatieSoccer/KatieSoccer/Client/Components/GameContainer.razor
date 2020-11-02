@@ -28,6 +28,8 @@ else
     protected override void OnInitialized()
     {
         GameScript = new GameScript();
+        GameScript.Update();
+        GameScript.OnUpdate += (o, e) => StateHasChanged();
         base.OnInitialized();
     }
 }
