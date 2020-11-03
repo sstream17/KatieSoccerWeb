@@ -5,19 +5,24 @@
 else
 {
     <div class="game-container">
+        <h1>menu</h1>
+        <div class="field-container">
+            <div class="field">
 
-        @foreach (var piece in GameScript.TeamOnePieces)
-        {
-            <Piece Model="piece" />
-        }
+                @foreach (var piece in GameScript.TeamOnePieces)
+                {
+                    <Piece Model="piece" />
+                }
 
-        @foreach (var piece in GameScript.TeamTwoPieces)
-        {
-            <Piece Model="piece" />
-        }
+                @foreach (var piece in GameScript.TeamTwoPieces)
+                {
+                    <Piece Model="piece" />
+                }
 
-        <Ball />
+                <Ball />
 
+            </div>
+        </div>
     </div>
 }
 
