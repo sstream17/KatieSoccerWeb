@@ -10,6 +10,7 @@ namespace KatieSoccer.Client.Models
         public Vector2 Velocity { get; set; }
 
         public bool IsMoving { get; private set; } = false;
+        private bool WasMoving { get; set; } = false;
 
         private readonly float threshold = 0.1f;
         private const int noMovementFrames = 3;
@@ -48,10 +49,12 @@ namespace KatieSoccer.Client.Models
 
                     Position += Velocity;
                 }
-                else
+                else if (WasMoving && !IsMoving)
                 {
                     Velocity = new Vector2(0, 0);
                 }
+
+                WasMoving = IsMoving;
 
                 CheckIsMoving();
 
