@@ -29,6 +29,11 @@ namespace KatieSoccer.Client.Models
             Y = y;
         }
 
+        public static float Distance(Vector2 a, Vector2 b)
+        {
+            return Convert.ToSingle(Math.Abs(a.Magnitude - b.Magnitude));
+        }
+
         public static Vector2 operator -(Vector2 a) => new Vector2(-a.X, -a.Y);
 
         public static Vector2 operator +(Vector2 a, Vector2 b)
