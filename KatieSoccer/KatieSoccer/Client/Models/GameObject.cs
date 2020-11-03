@@ -91,7 +91,7 @@ namespace KatieSoccer.Client.Models
                 var distance = Vector2.Distance(previousPositions[i], previousPositions[i + 1]);
                 if (distance >= threshold)
                 {
-                    //The minimum movement has been detected between frames
+                    // The minimum movement has been detected between frames
                     IsMoving = true;
                     break;
                 }
