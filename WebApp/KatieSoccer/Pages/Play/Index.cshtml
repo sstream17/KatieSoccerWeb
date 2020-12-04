@@ -39,5 +39,11 @@
     <div class="webgl-content">
         <div id="unityContainer" style="width: 960px; height: 600px"></div>
     </div>
+
+    <script>
+        function initializeGame() {
+            unityInstance.SendMessage("Field", "SetTeamNames", '{teamOneName: "TeamOne", teamTwoName: "TeamTwo"}');
+        }
+    </script>
 </body>
 </html>

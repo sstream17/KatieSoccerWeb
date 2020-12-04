@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class GameScript : MonoBehaviour
@@ -27,6 +28,25 @@ public class GameScript : MonoBehaviour
     private bool goalScored = false;
     private bool endGame = false;
 
+    [DllImport("__Internal")]
+    private static extern void Ready();
+
+    public void SetTeamColors(string colorsData)
+    {
+        var colors = JsonUtility.FromJson<TeamColors>(colorsData);
+        var colorComponents = colors.TeamOneColor;
+        var teamOneColor = new Color(colorComponents.R, colorComponents.G, colorComponents.B);
+        colorComponents = colors.TeamTwoColor;
+        var teamTwoColor = new Color(colorComponents.R, colorComponents.G, colorComponents.B);
+        GameData.SetTeamColors(teamOneColor, teamTwoColor);
+    }
+
+    public void SetTeamNames(string namesData)
+    {
+        var names = JsonUtility.FromJson<TeamNames>(namesData);
+        GameData.SetTeamNames(names.TeamOneName, names.TeamTwoName);
+    }
+
     public void SetStartingPositions()
     {
         for (int i = 0; i < allPieces.Length; i++)
@@ -46,6 +66,7 @@ public class GameScript : MonoBehaviour
 
     void Awake()
     {
+        Ready();
         scoreToWin = GameData.ScoreToWin;
         SetTeamColor(TeamOnePieces, GameData.TeamOneColor);
         SetTeamColor(TeamTwoPieces, GameData.TeamTwoColor);
