@@ -3,6 +3,6 @@ mergeInto(LibraryManager.library, {
     initializeGame();
   }, 
   UpdateScore: function(id, score) {
-    document.getElementById(id).textContent = score;
+    document.getElementById(Pointer_stringify(id)).textContent = score;
   }
 });
