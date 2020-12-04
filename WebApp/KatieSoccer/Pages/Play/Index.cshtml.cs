@@ -4,7 +4,7 @@ namespace KatieSoccer.Pages.Play
 {
     public class IndexModel : PageModel
     {
-        public void OnGet()
+        public void OnGetAsync(string id)
         {
         }
     }
