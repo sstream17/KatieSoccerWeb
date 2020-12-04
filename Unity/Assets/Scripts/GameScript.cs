@@ -46,8 +46,6 @@ public class GameScript : MonoBehaviour
 
     void Awake()
     {
-        Scoreboard.TeamOneName.text = GameData.TeamOneName;
-        Scoreboard.TeamTwoName.text = GameData.TeamTwoName;
         scoreToWin = GameData.ScoreToWin;
         SetTeamColor(TeamOnePieces, GameData.TeamOneColor);
         SetTeamColor(TeamTwoPieces, GameData.TeamTwoColor);

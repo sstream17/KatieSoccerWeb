@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class Scoreboard : MonoBehaviour
 {
-    public TextMeshProUGUI TeamOneName;
-    public TextMeshProUGUI TeamTwoName;
-    public TextMeshProUGUI TeamOneScoreDisplay;
-    public TextMeshProUGUI TeamTwoScoreDisplay;
     public Animator MessageAnimator;
     public TextMeshProUGUI MessageText;
 
     public void UpdateScoreboard(int teamOneScore, int teamTwoScore)
     {
-        TeamOneScoreDisplay.text = teamOneScore.ToString();
-        TeamTwoScoreDisplay.text = teamTwoScore.ToString();
+        ////TeamOneScoreDisplay.text = teamOneScore.ToString();
+        ////TeamTwoScoreDisplay.text = teamTwoScore.ToString();
     }
 
     public void DisplayMessage(string message)
