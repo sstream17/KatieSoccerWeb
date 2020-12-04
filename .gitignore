@@ -32,7 +32,7 @@ bld/
 [Ll]ogs/
 
 # Include WebGL built files
-!wwwroot/[Bb]uild
+!wwwroot/[Bb]uild/
 
 
 # Visual Studio 2015/2017 cache/options directory
