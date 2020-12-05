@@ -13,7 +13,9 @@
     </div>
     <div class="row center">
         <h3>Color</h3>
-        <input type="color" value="#CC0000" />
+        <input type="color"
+               value="@Color"
+               @onchange="@OnColorChanged" />
     </div>
     <div class="row space-evenly">
         <div class="column center space-evenly w-100">
@@ -34,11 +36,25 @@
 </div>
 
 @code {
+    private const string nameKey = "name";
+    private const string colorKey = "color";
+
     private string Name { get; set; }
+    private string Color { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Name = await localStorage.GetItemAsync<string>("name");
+        Name = await localStorage.GetItemAsync<string>(nameKey);
+        if (string.IsNullOrEmpty(Name))
+        {
+            Name = "Player8002";
+        }
+
+        Color = await localStorage.GetItemAsync<string>(colorKey);
+        if (string.IsNullOrEmpty(Color))
+        {
+            Color = "#0000CC";
+        }
     }
 
     private async Task SaveToLocalStorage(string key, string value)
@@ -50,6 +66,13 @@
     {
         var value = e.Value.ToString();
         Name = value;
-        await SaveToLocalStorage("name", value);
+        await SaveToLocalStorage(nameKey, value);
+    }
+
+    private async void OnColorChanged(ChangeEventArgs e)
+    {
+        var value = e.Value.ToString();
+        Color = value;
+        await SaveToLocalStorage(colorKey, value);
     }
 }
