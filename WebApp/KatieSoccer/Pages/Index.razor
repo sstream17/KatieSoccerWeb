@@ -1,3 +1,29 @@
 ﻿@page "/"
 
-<h1>Katie Soccer</h1>
+<div class="column center space-evenly">
+    <h1>Katie Soccer</h1>
+    <div class="row center">
+        <h3>Name</h3>
+        <input type="text" placeholder="Player8002" />
+    </div>
+    <div class="row center">
+        <h3>Color</h3>
+        <input type="color" value="#CC0000" />
+    </div>
+    <div class="row space-evenly">
+        <div class="column center space-evenly w-100">
+            <h2>Play Local</h2>
+            <div class="row center space-evenly">
+                <a href="/play">vs. Bot</a>
+                <a href="/play">vs. Human</a>
+            </div>
+        </div>
+        <div class="column center space-evenly w-100">
+            <h2>Play Online</h2>
+            <div class="row center space-evenly">
+                <a href="/play/1234">Create Match</a>
+                <a href="/play/1234">Join Match</a>
+            </div>
+        </div>
+    </div>
+</div>
