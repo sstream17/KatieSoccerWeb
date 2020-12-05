@@ -10,11 +10,29 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Katie Soccer</title>
     <link rel="shortcut icon" href="~/TemplateData/favicon.ico">
-    <link rel="stylesheet" href="~/TemplateData/style.css">
+    <link rel="stylesheet" href="~/css/style.css">
 </head>
 <body>
-    <h1>Katie Soccer</h1>
-    <a href="/play">Local</a>
-    <a href="/play/1234">Online</a>
+    <div class="column center">
+        <h1>Katie Soccer</h1>
+        <div class="row center">
+            <h3>Name</h3>
+            <input type="text" placeholder="Player8002" />
+        </div>
+        <div class="row center">
+            <h3>Color</h3>
+            <input type="color" value="#CC0000" />
+        </div>
+        <div class="row">
+            <div class="column center">
+                <h2>Local</h2>
+                <a href="/play">vs. Human</a>
+            </div>
+            <div class="column center">
+                <h2>Online</h2>
+                <a href="/play/1234">Create Match</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
