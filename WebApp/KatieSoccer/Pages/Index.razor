@@ -42,18 +42,33 @@
     private string Name { get; set; }
     private string Color { get; set; }
 
+    private string RandomName()
+    {
+        var random = new Random();
+        var number = random.Next(0, 10000).ToString("D4");
+        return $"Player{number}";
+    }
+
+    private string RandomColor()
+    {
+        var random = new Random();
+        return String.Format("#{0:X6}", random.Next(0x1000000));
+    }
+
     protected override async Task OnInitializedAsync()
     {
         Name = await localStorage.GetItemAsync<string>(nameKey);
         if (string.IsNullOrEmpty(Name))
         {
-            Name = "Player8002";
+            Name = RandomName();
+            await SaveToLocalStorage(nameKey, Name);
         }
 
         Color = await localStorage.GetItemAsync<string>(colorKey);
         if (string.IsNullOrEmpty(Color))
         {
-            Color = "#0000CC";
+            Color = RandomColor();
+            await SaveToLocalStorage(colorKey, Color);
         }
     }
 
