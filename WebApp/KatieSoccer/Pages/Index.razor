@@ -1,10 +1,15 @@
 ﻿@page "/"
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
 
 <div class="column center space-evenly">
     <h1>Katie Soccer</h1>
     <div class="row center">
         <h3>Name</h3>
-        <input type="text" placeholder="Player8002" />
+        <input type="text"
+               placeholder="Player8002"
+               value="@Name"
+               @onchange="@OnNameChanged" />
     </div>
     <div class="row center">
         <h3>Color</h3>
@@ -27,3 +32,24 @@
         </div>
     </div>
 </div>
+
+@code {
+    private string Name { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Name = await localStorage.GetItemAsync<string>("name");
+    }
+
+    private async Task SaveToLocalStorage(string key, string value)
+    {
+        await localStorage.SetItemAsync(key, value);
+    }
+
+    private async void OnNameChanged(ChangeEventArgs e)
+    {
+        var value = e.Value.ToString();
+        Name = value;
+        await SaveToLocalStorage("name", value);
+    }
+}
