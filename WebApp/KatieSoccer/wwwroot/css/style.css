@@ -12,6 +12,11 @@
     align-items: center;
 }
 
+.space-evenly {
+    justify-content: space-evenly;
+    width: 100%;
+}
+
 input[type=color] {
     cursor: pointer;
     box-shadow: 5px 5px 2px #000000;
