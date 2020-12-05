@@ -13,6 +13,8 @@
 }
 
 input[type=color] {
+    cursor: pointer;
+    box-shadow: 5px 5px 2px #000000;
     padding: 0;
     margin: .4rem;
     border-radius: 100%;
@@ -21,6 +23,17 @@ input[type=color] {
     border: none;
     outline: none;
     -webkit-appearance: none;
+}
+
+input[type=color]::before {
+    content: '';
+    position: absolute;
+    border-radius: 100%;
+    background: #FFFFFF00;
+    border: 5px solid #FFFFFFCC;
+    height: 28px;
+    width: 28px;
+    transform: translate(11px, 11px);
 }
 
 input[type=color]::-webkit-color-swatch-wrapper {
