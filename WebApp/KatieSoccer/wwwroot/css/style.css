@@ -1,4 +1,10 @@
-﻿.column {
+﻿html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.column {
     display: flex;
     flex-direction: column;
 }
@@ -12,8 +18,17 @@
     align-items: center;
 }
 
-.space-evenly {
+.column.space-evenly {
+    height: 100%;
     justify-content: space-evenly;
+}
+
+.row.space-evenly {
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.w-100 {
     width: 100%;
 }
 
