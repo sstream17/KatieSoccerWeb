@@ -16,7 +16,7 @@ window.initializeGame = () => {
 		PlayerTwo: {
 			IsLocal: true,
 			Name: "Player 2",
-			Color: ""
+			Color: "#42147B"
 		}
 	};
 	unityInstance.SendMessage("Field", "InitializeGame", JSON.stringify(gameData));
