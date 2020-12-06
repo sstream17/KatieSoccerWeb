@@ -26,14 +26,14 @@ public class SignalRLib
 
         connection.On<string>(hubListener, (message) =>
         {
-            OnMessageReceived(message);
+            OnMessageReceived(hubListener, message);
         });
 
         try
         {
             await connection.StartAsync();
 
-            OnConnectionStarted("Connection Started");
+            OnConnectionStarted(hubListener, "Connection Started");
         }
         catch (Exception ex)
         {
@@ -41,39 +41,42 @@ public class SignalRLib
         }
     }
 
-    public async void SendMessage(string hubMethod, string hubMessage)
+    public async void InvokeMethod(string hubMethod, object argument)
     {
-        await connection.InvokeAsync(hubMethod, hubMessage);
+        await connection.InvokeAsync(hubMethod, argument);
     }
 
 #elif UNITY_WEBGL
 
     [DllImport("__Internal")]
-    private static extern void Connect(string url, string listener, Action<string> cnx, Action<string> msg);
+    private static extern void Connect(string url, Action<string, object> callback);
 
     [DllImport("__Internal")]
-    private static extern void Invoke(string method, string message);
+    private static extern void AddListener(string method, Action<string, object> callback);
 
-    [MonoPInvokeCallback(typeof(Action<string>))]
-    public static void ConnectionCallback(string message)
+    [DllImport("__Internal")]
+    private static extern void Invoke(string method, object argument);
+
+    [MonoPInvokeCallback(typeof(Action<string, object>))]
+    public static void ConnectionCallback(string method, object argument)
     {
-        OnConnectionStarted(message);
+        OnConnectionStarted(method, argument);
     }
 
-    [MonoPInvokeCallback(typeof(Action<string>))]
-    public static void MessageCallback(string message)
+    [MonoPInvokeCallback(typeof(Action<string, object>))]
+    public static void MessageCallback(string method, object argument)
     {
-        OnMessageReceived(message);
+        OnMessageReceived(method, argument);
     }
 
     public void Init(string hubUrl, string hubListener)
     {
-        Connect(hubUrl, hubListener, ConnectionCallback, MessageCallback);
+        Connect(hubUrl, ConnectionCallback);
     }
 
-    public void SendMessage(string hubMethod, string hubMessage)
+    public void InvokeMethod(string hubMethod, object argument)
     {
-        Invoke(hubMethod, hubMessage);
+        Invoke(hubMethod, argument);
     }
 
 #endif
@@ -81,17 +84,19 @@ public class SignalRLib
     public event EventHandler<MessageEventArgs> MessageReceived;
     public event EventHandler<MessageEventArgs> ConnectionStarted;
 
-    private static void OnMessageReceived(string message)
+    private static void OnMessageReceived(string method, object argument)
     {
         var args = new MessageEventArgs();
-        args.Message = message;
+        args.Method = method;
+        args.Argument = argument;
         instance.MessageReceived?.Invoke(instance, args);
     }
 
-    private static void OnConnectionStarted(string message)
+    private static void OnConnectionStarted(string method, object argument)
     {
         var args = new MessageEventArgs();
-        args.Message = message;
+        args.Method = method;
+        args.Argument = argument;
         instance.ConnectionStarted?.Invoke(instance, args);
     }
 
@@ -99,5 +104,6 @@ public class SignalRLib
 
 public class MessageEventArgs : EventArgs
 {
-    public string Message { get; set; }
+    public string Method { get; set; }
+    public object Argument { get; set; }
 }

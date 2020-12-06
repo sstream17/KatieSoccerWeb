@@ -12,20 +12,14 @@ var SignalRLib = {
         }
     },
 
-    Connect: function (url, listener, cnx, msg) {
+    Connect: function (url, callback) {
         var hubUrl = Pointer_stringify(url);
-        var hubListener = Pointer_stringify(listener);
 
-        vars.cnxCallback = cnx;
-        vars.msgCallback = msg;
+        vars.cnxCallback = callback;
 
         vars.connection = new signalR.HubConnectionBuilder()
             .withUrl(hubUrl)
             .build();
-
-        vars.connection.on(hubListener, function (message) {
-            vars.sendMessage(message, vars.msgCallback);
-        });
 
         vars.connection.start()
             .then(function () {
@@ -34,6 +28,14 @@ var SignalRLib = {
                 return console.error(err.toString());
             });
     },
+
+    AddListener: function(listener, callback) {
+        var hubListener = Pointer_stringify(listener);
+
+        vars.connection.on(hubListener, function (message) {
+            vars.sendMessage(message, callback);
+        });
+    }
 
     Invoke: function (method, message) {
         var hubMethod = Pointer_stringify(method);
