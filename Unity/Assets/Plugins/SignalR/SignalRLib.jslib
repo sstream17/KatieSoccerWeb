@@ -29,7 +29,7 @@ var SignalRLib = {
             });
     },
 
-    AddListener: function(listener, callback) {
+    AddHubListener: function(listener, callback) {
         var hubListener = Pointer_stringify(listener);
 
         vars.connection.on(hubListener, function (message) {
