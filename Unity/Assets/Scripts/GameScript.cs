@@ -33,7 +33,7 @@ public class GameScript : MonoBehaviour
 
     private SignalRLib signalRLib;
 
-    private const string SignalRHubURL = "https://localhost:44346//game-hub";
+    private const string SignalRHubURL = "https://localhost:44346/game-hub";
 
     [DllImport("__Internal")]
     private static extern void Ready();
