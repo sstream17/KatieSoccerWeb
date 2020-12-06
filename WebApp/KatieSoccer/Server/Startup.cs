@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using KatieSoccer.Server.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -36,6 +37,7 @@ namespace KatieSoccer.Server
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +75,7 @@ namespace KatieSoccer.Server
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
+                endpoints.MapHub<GameHub>("/game-hub");
             });
         }
     }
