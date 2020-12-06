@@ -54,24 +54,6 @@ public class GameScript : MonoBehaviour
         GameData.SetTeamColors(teamOneColor, teamTwoColor);
     }
 
-    public void InitializeGame(string gameDataJson)
-    {
-        var gameData = JsonUtility.FromJson<GameDataDTO>(gameDataJson);
-        PlayerOne = gameData.PlayerOne;
-        PlayerTwo = gameData.PlayerTwo;
-
-        SetTeamNames(PlayerOne.Name, PlayerTwo.Name);
-        SetTeamColors(PlayerOne.Color, PlayerTwo.Color);
-    }
-
-    public void SetStartingPositions()
-    {
-        for (int i = 0; i < allPieces.Length; i++)
-        {
-            startingPositions[i] = allPieces[i].transform.position;
-        }
-    }
-
     private void SetTeamPiecesColor(GameObject[] pieces, Color color)
     {
         foreach (GameObject piece in pieces)
@@ -81,10 +63,15 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    void Awake()
+    public void InitializeGame(string gameDataJson)
     {
-        Ready();
-        scoreToWin = GameData.ScoreToWin;
+        var gameData = JsonUtility.FromJson<GameDataDTO>(gameDataJson);
+        PlayerOne = gameData.PlayerOne;
+        PlayerTwo = gameData.PlayerTwo;
+
+        SetTeamNames(PlayerOne.Name, PlayerTwo.Name);
+        SetTeamColors(PlayerOne.Color, PlayerTwo.Color);
+
         SetTeamPiecesColor(TeamOnePieces, GameData.TeamOneColor);
         SetTeamPiecesColor(TeamTwoPieces, GameData.TeamTwoColor);
         TeamOneGoal.color = new Color(
@@ -97,6 +84,20 @@ public class GameScript : MonoBehaviour
             GameData.TeamTwoColor.g,
             GameData.TeamTwoColor.b,
             0.79f);
+    }
+
+    public void SetStartingPositions()
+    {
+        for (int i = 0; i < allPieces.Length; i++)
+        {
+            startingPositions[i] = allPieces[i].transform.position;
+        }
+    }
+
+    void Awake()
+    {
+        Ready();
+        scoreToWin = GameData.ScoreToWin;
 
         int numberOfAllPieces = TeamOnePieces.Length + TeamTwoPieces.Length + 1;
         allPieces = new GameObject[numberOfAllPieces];
