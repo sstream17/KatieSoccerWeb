@@ -34,20 +34,34 @@ public class GameScript : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void Ready();
 
-    public void SetTeamColors(string colorsData)
+    private void SetTeamNames(string teamOneName, string teamTwoName)
     {
-        var colors = JsonUtility.FromJson<TeamColors>(colorsData);
-        var colorComponents = colors.TeamOneColor;
-        var teamOneColor = new Color(colorComponents.R, colorComponents.G, colorComponents.B);
-        colorComponents = colors.TeamTwoColor;
-        var teamTwoColor = new Color(colorComponents.R, colorComponents.G, colorComponents.B);
+        GameData.SetTeamNames(teamOneName, teamTwoName);
+    }
+
+    private void SetTeamColors(string teamOneHexColor, string teamTwoHexColor)
+    {
+        if (!ColorUtility.TryParseHtmlString(teamOneHexColor, out Color teamOneColor))
+        {
+            teamOneColor = PieceColors.Red;
+        }
+
+        if (!ColorUtility.TryParseHtmlString(teamTwoHexColor, out Color teamTwoColor))
+        {
+            teamOneColor = PieceColors.Blue;
+        }
+
         GameData.SetTeamColors(teamOneColor, teamTwoColor);
     }
 
-    public void SetTeamNames(string namesData)
+    public void InitializeGame(string gameDataJson)
     {
-        var names = JsonUtility.FromJson<TeamNames>(namesData);
-        GameData.SetTeamNames(names.TeamOneName, names.TeamTwoName);
+        var gameData = JsonUtility.FromJson<GameDataDTO>(gameDataJson);
+        PlayerOne = gameData.PlayerOne;
+        PlayerTwo = gameData.PlayerTwo;
+
+        SetTeamNames(PlayerOne.Name, PlayerTwo.Name);
+        SetTeamColors(PlayerOne.Color, PlayerTwo.Color);
     }
 
     public void SetStartingPositions()
@@ -58,7 +72,7 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    private void SetTeamColor(GameObject[] pieces, Color color)
+    private void SetTeamPiecesColor(GameObject[] pieces, Color color)
     {
         foreach (GameObject piece in pieces)
         {
@@ -71,8 +85,8 @@ public class GameScript : MonoBehaviour
     {
         Ready();
         scoreToWin = GameData.ScoreToWin;
-        SetTeamColor(TeamOnePieces, GameData.TeamOneColor);
-        SetTeamColor(TeamTwoPieces, GameData.TeamTwoColor);
+        SetTeamPiecesColor(TeamOnePieces, GameData.TeamOneColor);
+        SetTeamPiecesColor(TeamTwoPieces, GameData.TeamTwoColor);
         TeamOneGoal.color = new Color(
             GameData.TeamOneColor.r,
             GameData.TeamOneColor.g,
