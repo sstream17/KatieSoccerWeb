@@ -8,6 +8,7 @@ namespace KatieSoccer.Server.Hubs
         public async Task JoinGame(string gameId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
+            await Clients.All.SendAsync("JoinedGame", gameId);
         }
 
         public async Task AddForce()

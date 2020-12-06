@@ -31,6 +31,10 @@ public class GameScript : MonoBehaviour
     private bool goalScored = false;
     private bool endGame = false;
 
+    private SignalRLib signalRLib;
+
+    private const string SignalRHubURL = "https://localhost:44346//game-hub";
+
     [DllImport("__Internal")]
     private static extern void Ready();
 
@@ -94,9 +98,29 @@ public class GameScript : MonoBehaviour
         }
     }
 
+    public void SetupSignalR()
+    {
+        signalRLib = new SignalRLib();
+        signalRLib.Init(SignalRHubURL);
+
+        signalRLib.ConnectionStarted += (object sender, MessageEventArgs e) =>
+        {
+            Debug.Log(e.Message);
+            signalRLib.InvokeMethod("JoinGame", "12345");
+        };
+
+        signalRLib.AddListener("JoinedGame");
+
+        signalRLib.MessageReceived += (object sender, MessageEventArgs e) =>
+        {
+            Debug.Log($"received {e.Message}");
+        };
+    }
+
     void Awake()
     {
         Ready();
+        SetupSignalR();
         scoreToWin = GameData.ScoreToWin;
 
         int numberOfAllPieces = TeamOnePieces.Length + TeamTwoPieces.Length + 1;
