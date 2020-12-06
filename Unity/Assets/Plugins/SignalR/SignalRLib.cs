@@ -44,7 +44,7 @@ public class SignalRLib
         });
     }
 
-    public async void InvokeMethod(string hubMethod, object argument)
+    public async void InvokeMethod(string hubMethod, string argument)
     {
         await connection.InvokeAsync(hubMethod, argument);
     }
@@ -82,7 +82,7 @@ public class SignalRLib
         AddHubListener(hubListener, MessageCallback);
     }
 
-    public void InvokeMethod(string hubMethod, object argument)
+    public void InvokeMethod(string hubMethod, string argument)
     {
         Invoke(hubMethod, argument);
     }
