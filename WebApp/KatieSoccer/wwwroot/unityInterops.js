@@ -28,5 +28,7 @@ window.initializeGame = () => {
 }
 
 window.disposeGame = () => {
-	unityInstance = null;
+	if (unityInstance) {
+		unityInstance.Quit();
+	}
 }
