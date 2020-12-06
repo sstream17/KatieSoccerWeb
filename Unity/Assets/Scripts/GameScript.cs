@@ -15,6 +15,9 @@ public class GameScript : MonoBehaviour
 
     public enum Team { TeamOne = -1, TeamTwo = 1 };
 
+    private Player PlayerOne;
+    private Player PlayerTwo;
+
     private GameObject[] allPieces;
     private Vector3[] startingPositions;
     private Team currentTurn;
@@ -179,8 +182,13 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    public void EnablePieceInteraction(GameObject[] pieces)
+    public void EnablePieceInteraction(GameObject[] pieces, bool isLocal)
     {
+        if (!isLocal)
+        {
+            return;
+        }
+
         foreach (GameObject piece in pieces)
         {
             PieceInteraction pieceInteraction = piece.GetComponent<PieceInteraction>();
@@ -201,11 +209,11 @@ public class GameScript : MonoBehaviour
     {
         if (currentTurn.Equals(Team.TeamOne))
         {
-            EnablePieceInteraction(TeamOnePieces);
+            EnablePieceInteraction(TeamOnePieces, PlayerOne.IsLocal);
         }
         else
         {
-            EnablePieceInteraction(TeamTwoPieces);
+            EnablePieceInteraction(TeamTwoPieces, PlayerTwo.IsLocal);
         }
     }
 
@@ -234,14 +242,14 @@ public class GameScript : MonoBehaviour
             DarkenPieces(TeamTwoPieces);
             DisablePieceInteraction(TeamTwoPieces);
             IlluminatePieces(TeamOnePieces);
-            EnablePieceInteraction(TeamOnePieces);
+            EnablePieceInteraction(TeamOnePieces, PlayerOne.IsLocal);
         }
         else
         {
             DarkenPieces(TeamOnePieces);
             DisablePieceInteraction(TeamOnePieces);
             IlluminatePieces(TeamTwoPieces);
-            EnablePieceInteraction(TeamTwoPieces);
+            EnablePieceInteraction(TeamTwoPieces, PlayerTwo.IsLocal);
         }
     }
 
