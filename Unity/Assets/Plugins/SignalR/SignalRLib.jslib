@@ -35,7 +35,7 @@ var SignalRLib = {
         vars.connection.on(hubListener, function (message) {
             vars.sendMessage(message, callback);
         });
-    }
+    },
 
     Invoke: function (method, message) {
         var hubMethod = Pointer_stringify(method);
