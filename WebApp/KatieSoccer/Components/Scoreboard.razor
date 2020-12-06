@@ -1,7 +1,9 @@
-﻿<div class="scoreboard">
+﻿@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<div class="scoreboard">
     <div class="player-one-data">
         <div id="player-one-name">
-            Player1
+            @PlayerOneName
         </div>
         <div id="player-one-score">
             0
@@ -16,3 +18,12 @@
         </div>
     </div>
 </div>
+
+@code {
+    private string PlayerOneName { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        PlayerOneName = await localStorage.GetItemAsync<string>(LocalStorageKeyConstants.NameKey);
+    }
+}
