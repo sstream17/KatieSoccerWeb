@@ -36,58 +36,26 @@
 </div>
 
 @code {
-    private const string nameKey = "name";
-    private const string colorKey = "color";
-
     private string Name { get; set; }
     private string Color { get; set; }
 
-    private string RandomName()
-    {
-        var random = new Random();
-        var number = random.Next(0, 10000).ToString("D4");
-        return $"Player{number}";
-    }
-
-    private string RandomColor()
-    {
-        var random = new Random();
-        return String.Format("#{0:X6}", random.Next(0x1000000));
-    }
-
     protected override async Task OnInitializedAsync()
     {
-        Name = await localStorage.GetItemAsync<string>(nameKey);
-        if (string.IsNullOrEmpty(Name))
-        {
-            Name = RandomName();
-            await SaveToLocalStorage(nameKey, Name);
-        }
-
-        Color = await localStorage.GetItemAsync<string>(colorKey);
-        if (string.IsNullOrEmpty(Color))
-        {
-            Color = RandomColor();
-            await SaveToLocalStorage(colorKey, Color);
-        }
-    }
-
-    private async Task SaveToLocalStorage(string key, string value)
-    {
-        await localStorage.SetItemAsync(key, value);
+        Name = await localStorage.GetItemAsync<string>(LocalStorageKeyConstants.NameKey);
+        Color = await localStorage.GetItemAsync<string>(LocalStorageKeyConstants.ColorKey);
     }
 
     private async void OnNameChanged(ChangeEventArgs e)
     {
         var value = e.Value.ToString();
         Name = value;
-        await SaveToLocalStorage(nameKey, value);
+        await localStorage.SetItemAsync(LocalStorageKeyConstants.NameKey, value);
     }
 
     private async void OnColorChanged(ChangeEventArgs e)
     {
         var value = e.Value.ToString();
         Color = value;
-        await SaveToLocalStorage(colorKey, value);
+        await localStorage.SetItemAsync(LocalStorageKeyConstants.ColorKey, value);
     }
 }

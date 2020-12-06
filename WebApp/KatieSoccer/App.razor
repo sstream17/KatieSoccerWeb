@@ -1,3 +1,8 @@
+@implements IDisposable
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -8,3 +13,50 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    private string RandomName()
+    {
+        var random = new Random();
+        var number = random.Next(0, 10000).ToString("D4");
+        return $"Player{number}";
+    }
+
+    private string RandomColor()
+    {
+        var random = new Random();
+        return String.Format("#{0:X6}", random.Next(0x1000000));
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+
+        var name = await localStorage.GetItemAsync<string>(LocalStorageKeyConstants.NameKey);
+        if (string.IsNullOrEmpty(name))
+        {
+            name = RandomName();
+            await localStorage.SetItemAsync(LocalStorageKeyConstants.NameKey, name);
+        }
+
+        var color = await localStorage.GetItemAsync<string>(LocalStorageKeyConstants.ColorKey);
+        if (string.IsNullOrEmpty(color))
+        {
+            color = RandomColor();
+            await localStorage.SetItemAsync(LocalStorageKeyConstants.ColorKey, color);
+        }
+    }
+
+    private async void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        if (!e.Location.Contains("play", StringComparison.OrdinalIgnoreCase))
+        {
+            await JS.InvokeVoidAsync("disposeGame", null);
+        }
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+}
