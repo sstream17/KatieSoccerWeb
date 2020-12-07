@@ -109,7 +109,7 @@ public class GameScript : MonoBehaviour
             signalRLib.SendMessage("JoinGame", "12345");
         };
 
-        signalRLib.MessageReceived += (object sender, MessageEventArgs e) =>
+        signalRLib.TurnReceived += (object sender, MessageEventArgs e) =>
         {
             Debug.Log($"received {e.Message}");
         };

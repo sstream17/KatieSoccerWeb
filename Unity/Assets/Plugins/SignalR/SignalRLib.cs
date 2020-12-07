@@ -26,7 +26,7 @@ public class SignalRLib
 
         connection.On<string>(hubListener, (message) =>
         {
-            OnMessageReceived(message);
+            OnTurnReceived(message);
         });
 
         try
@@ -61,14 +61,14 @@ public class SignalRLib
     }
 
     [MonoPInvokeCallback(typeof(Action<string>))]
-    public static void MessageCallback(string message)
+    public static void TurnCallback(string message)
     {
-        OnMessageReceived(message);
+        OnTurnReceived(message);
     }
 
     public void Init(string hubUrl, string hubListener)
     {
-        Connect(hubUrl, hubListener, ConnectionCallback, MessageCallback);
+        Connect(hubUrl, hubListener, ConnectionCallback, TurnCallback);
     }
 
     public void SendMessage(string hubMethod, string hubMessage)
@@ -78,14 +78,14 @@ public class SignalRLib
 
 #endif
 
-    public event EventHandler<MessageEventArgs> MessageReceived;
+    public event EventHandler<MessageEventArgs> TurnReceived;
     public event EventHandler<MessageEventArgs> ConnectionStarted;
 
-    private static void OnMessageReceived(string message)
+    private static void OnTurnReceived(string message)
     {
         var args = new MessageEventArgs();
         args.Message = message;
-        instance.MessageReceived?.Invoke(instance, args);
+        instance.TurnReceived?.Invoke(instance, args);
     }
 
     private static void OnConnectionStarted(string message)
