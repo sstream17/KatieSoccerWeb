@@ -15,7 +15,12 @@ namespace KatieSoccer.Server.Hubs
 
         public async Task AddTurn(string dataJson)
         {
-            var data = JsonSerializer.Deserialize<TurnData>(dataJson);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var data = JsonSerializer.Deserialize<TurnData>(dataJson, options);
             await Clients.Group(data.GameId).SendAsync("TurnReceived", dataJson);
         }
     }

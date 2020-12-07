@@ -1,13 +1,10 @@
-﻿using System;
-using System.Numerics;
-
-namespace KatieSoccer.Shared
+﻿namespace KatieSoccer.Shared
 {
     public class TurnData
     {
-        public string GameId;
-        public int Player;
-        public int PieceIndex;
-        public Vector3 Force;
+        public string GameId { get; set; }
+        public int Player { get; set; }
+        public int PieceIndex { get; set; }
+        public Vector Force { get; set; }
     }
 }
