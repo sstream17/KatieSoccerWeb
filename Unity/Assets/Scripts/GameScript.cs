@@ -375,6 +375,7 @@ public class GameScript : MonoBehaviour
         var pieceIndex = Array.IndexOf(teamPieces, piece);
         var turnData = new TurnDataDTO
         {
+            GameId = "54321",
             Player = (int)currentTurn,
             PieceIndex = pieceIndex,
             Force = force
