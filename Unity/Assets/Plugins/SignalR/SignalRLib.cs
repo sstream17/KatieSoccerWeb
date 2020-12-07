@@ -78,26 +78,26 @@ public class SignalRLib
 
 #endif
 
-    public event EventHandler<MessageEventArgs> TurnReceived;
-    public event EventHandler<MessageEventArgs> ConnectionStarted;
+    public event EventHandler<DataEventArgs> TurnReceived;
+    public event EventHandler<DataEventArgs> ConnectionStarted;
 
     private static void OnTurnReceived(string message)
     {
-        var args = new MessageEventArgs();
-        args.Message = message;
+        var args = new DataEventArgs();
+        args.Data = message;
         instance.TurnReceived?.Invoke(instance, args);
     }
 
     private static void OnConnectionStarted(string message)
     {
-        var args = new MessageEventArgs();
-        args.Message = message;
+        var args = new DataEventArgs();
+        args.Data = message;
         instance.ConnectionStarted?.Invoke(instance, args);
     }
 
 }
 
-public class MessageEventArgs : EventArgs
+public class DataEventArgs : EventArgs
 {
-    public string Message { get; set; }
+    public string Data { get; set; }
 }

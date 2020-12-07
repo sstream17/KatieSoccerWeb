@@ -103,15 +103,15 @@ public class GameScript : MonoBehaviour
         signalRLib = new SignalRLib();
         signalRLib.Init(SignalRHubURL, "JoinedGame");
 
-        signalRLib.ConnectionStarted += (object sender, MessageEventArgs e) =>
+        signalRLib.ConnectionStarted += (object sender, DataEventArgs e) =>
         {
-            Debug.Log(e.Message);
+            Debug.Log(e.Data);
             signalRLib.SendMessage("JoinGame", "12345");
         };
 
-        signalRLib.TurnReceived += (object sender, MessageEventArgs e) =>
+        signalRLib.TurnReceived += (object sender, DataEventArgs e) =>
         {
-            Debug.Log($"received {e.Message}");
+            Debug.Log($"received {e.Data}");
         };
     }
 
