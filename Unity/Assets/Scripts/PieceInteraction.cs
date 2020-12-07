@@ -5,6 +5,7 @@ public class PieceInteraction : MonoBehaviour
     public Rigidbody rb;
     public float Speed = 200f;
     public PieceAnimation PieceAnimation;
+    public GameScript GameScript;
 
     private bool isSelected = false;
     private float triggerOffset = 0.3f;
@@ -63,7 +64,9 @@ public class PieceInteraction : MonoBehaviour
             {
                 launchable = false;
                 PieceAnimation.PieceLaunched();
-                rb.AddForce(Vector3.ClampMagnitude(targetVector * speedAdjust, speedClamp) * -Speed);
+                var launchForce = Vector3.ClampMagnitude(targetVector * speedAdjust, speedClamp) * -Speed;
+                rb.AddForce(launchForce);
+                GameScript.AddTurn(gameObject, launchForce);
             }
             else
             {

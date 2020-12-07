@@ -101,12 +101,11 @@ public class GameScript : MonoBehaviour
     public void SetupSignalR()
     {
         signalRLib = new SignalRLib();
-        signalRLib.Init(SignalRHubURL, "JoinedGame");
+        signalRLib.Init(SignalRHubURL, "TurnReceived");
 
         signalRLib.ConnectionStarted += (object sender, DataEventArgs e) =>
         {
             Debug.Log(e.Data);
-            signalRLib.SendMessage("JoinGame", "12345");
         };
 
         signalRLib.TurnReceived += (object sender, DataEventArgs e) =>
@@ -368,5 +367,20 @@ public class GameScript : MonoBehaviour
     public void SetUnpaused()
     {
         wasPaused = false;
+    }
+
+    public void AddTurn(GameObject piece, Vector3 force)
+    {
+        var teamPieces = currentTurn.Equals(Team.TeamOne) ? TeamOnePieces : TeamTwoPieces;
+        var pieceIndex = Array.IndexOf(teamPieces, piece);
+        var turnData = new TurnDataDTO
+        {
+            Player = (int)currentTurn,
+            PieceIndex = pieceIndex,
+            Force = force
+        };
+
+        var turnDataJson = JsonUtility.ToJson(turnData);
+        signalRLib.SendMessage("AddTurn", turnDataJson);
     }
 }
