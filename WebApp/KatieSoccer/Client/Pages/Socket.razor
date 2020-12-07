@@ -1,0 +1,33 @@
+﻿@page "/socket"
+@inject NavigationManager NavigationManager
+
+<h3>Socket</h3>
+
+<button @onclick="JoinGame">Join Game</button>
+<p>@Text</p>
+
+@code {
+    private string Text;
+    private HubConnection connection;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        connection = new HubConnectionBuilder()
+        .WithUrl(NavigationManager.ToAbsoluteUri("/game-hub"))
+        .Build();
+
+        await connection.StartAsync();
+
+        connection.On<string>("JoinedGame", (id) =>
+        {
+            Text = id;
+            StateHasChanged();
+        });
+    }
+
+    private async void JoinGame()
+    {
+        await connection.InvokeAsync("JoinGame", "1234");
+    }
+}
