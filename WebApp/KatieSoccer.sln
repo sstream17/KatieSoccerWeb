@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KatieSoccer", "KatieSoccer\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KatieSoccer.Server", "KatieSoccer\Server\KatieSoccer.Server.csproj", "{95F09572-AD5F-4F48-9011-B23EDBB501CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KatieSoccer.Shared", "KatieSoccer\Shared\KatieSoccer.Shared\KatieSoccer.Shared.csproj", "{96503A98-50AE-4C3E-8405-C67CF566EFDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{95F09572-AD5F-4F48-9011-B23EDBB501CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95F09572-AD5F-4F48-9011-B23EDBB501CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95F09572-AD5F-4F48-9011-B23EDBB501CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96503A98-50AE-4C3E-8405-C67CF566EFDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96503A98-50AE-4C3E-8405-C67CF566EFDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96503A98-50AE-4C3E-8405-C67CF566EFDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96503A98-50AE-4C3E-8405-C67CF566EFDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text.Json;
+using System.Threading.Tasks;
+using KatieSoccer.Shared;
 using Microsoft.AspNetCore.SignalR;
 
 namespace KatieSoccer.Server.Hubs
@@ -11,8 +13,10 @@ namespace KatieSoccer.Server.Hubs
             await Clients.All.SendAsync("JoinedGame", gameId);
         }
 
-        public async Task AddForce()
+        public async Task AddTurn(string dataJson)
         {
+            var data = JsonSerializer.Deserialize<TurnData>(dataJson);
+            await Clients.Group(data.GameId).SendAsync("TurnReceived", dataJson);
         }
     }
 }
