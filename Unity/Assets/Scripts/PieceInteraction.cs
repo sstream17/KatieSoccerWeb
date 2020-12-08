@@ -66,7 +66,7 @@ public class PieceInteraction : MonoBehaviour
                 PieceAnimation.PieceLaunched();
                 var launchForce = Vector3.ClampMagnitude(targetVector * speedAdjust, speedClamp) * -Speed;
                 rb.AddForce(launchForce);
-                GameScript.AddTurn(gameObject, launchForce);
+                GameScript.SendTurn(gameObject, launchForce);
             }
             else
             {

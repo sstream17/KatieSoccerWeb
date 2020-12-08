@@ -369,7 +369,7 @@ public class GameScript : MonoBehaviour
         wasPaused = false;
     }
 
-    public void AddTurn(GameObject piece, Vector3 force)
+    public void SendTurn(GameObject piece, Vector3 force)
     {
         var teamPieces = currentTurn.Equals(Team.TeamOne) ? TeamOnePieces : TeamTwoPieces;
         var pieceIndex = Array.IndexOf(teamPieces, piece);
@@ -383,5 +383,14 @@ public class GameScript : MonoBehaviour
 
         var turnDataJson = JsonUtility.ToJson(turnData);
         signalRLib.SendMessage("AddTurn", turnDataJson);
+    }
+
+    public void PlayReceivedTurn(TurnDataDTO turnData)
+    {
+        if ((turnData.Player.Equals(Team.TeamOne) && PlayerOne.IsLocal)
+            || (turnData.Player.Equals(Team.TeamTwo) && PlayerTwo.IsLocal))
+        {
+            return;
+        }
     }
 }
