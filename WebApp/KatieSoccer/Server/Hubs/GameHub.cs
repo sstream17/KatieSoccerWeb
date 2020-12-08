@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using KatieSoccer.Shared;
 using Microsoft.AspNetCore.SignalR;
@@ -18,15 +19,45 @@ namespace KatieSoccer.Server.Hubs
             await Clients.All.SendAsync("JoinedGame", gameId);
         }
 
+        public async Task InitializeGame()
+        {
+            var data = new GameData
+            {
+                PlayerOne = new Player
+                {
+                    IsLocal = true,
+                    Name = "Team One",
+                    Color = "#a72b2a"
+                },
+                PlayerTwo = new Player
+                {
+                    IsLocal = false,
+                    Name = "Team Two",
+                    Color = "#debc97"
+                }
+            };
+
+            var dataJson = string.Empty;
+            using (var stream = new MemoryStream())
+            {
+                await JsonSerializer.SerializeAsync(stream, data);
+                stream.Position = 0;
+                using var reader = new StreamReader(stream);
+                dataJson = await reader.ReadToEndAsync();
+            };
+
+            await Clients.All.SendAsync("GameInitialized", dataJson);
+        }
+
         public async Task AddTurn(string dataJson)
         {
             var data = JsonSerializer.Deserialize<TurnData>(dataJson, jsonSerializerOptions);
             await Clients.Group(data.GameId).SendAsync("TurnReceived", dataJson);
         }
 
-        public async Task UpdateScore(string scoreJson)
+        public async Task UpdateScore(string dataJson)
         {
-            var data = JsonSerializer.Deserialize<ScoreData>(scoreJson, jsonSerializerOptions);
+            var data = JsonSerializer.Deserialize<ScoreData>(dataJson, jsonSerializerOptions);
             await Clients.Group(data.GameId).SendAsync("ScoreReceived", data);
         }
     }
