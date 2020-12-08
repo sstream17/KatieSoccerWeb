@@ -8,18 +8,6 @@ public class Scoreboard : MonoBehaviour
     public Animator MessageAnimator;
     public TextMeshProUGUI MessageText;
 
-    [DllImport("__Internal")]
-    private static extern void UpdateScore(string id, int score);
-
-    private const string TeamOneId = "player-one-score";
-    private const string TeamTwoId = "player-two-score";
-
-    public void UpdateScoreboard(int teamOneScore, int teamTwoScore)
-    {
-        UpdateScore(TeamOneId, teamOneScore);
-        UpdateScore(TeamTwoId, teamTwoScore);
-    }
-
     public void DisplayMessage(string message)
     {
         MessageText.text = message;

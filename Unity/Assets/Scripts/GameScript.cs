@@ -312,7 +312,7 @@ public class GameScript : MonoBehaviour
         Scoreboard.DisplayMessage("Goal!");
         StopAllPieces();
         AddToScore(scoringTeam);
-        Scoreboard.UpdateScoreboard(teamOneScore, teamTwoScore);
+        SendScore(teamOneScore, teamTwoScore);
         Time.timeScale = 0f;
     }
 
@@ -363,7 +363,7 @@ public class GameScript : MonoBehaviour
     {
         teamOneScore = 0;
         teamTwoScore = 0;
-        Scoreboard.UpdateScoreboard(teamOneScore, teamTwoScore);
+        SendScore(teamOneScore, teamTwoScore);
     }
 
     public void SetUnpaused()
@@ -402,5 +402,18 @@ public class GameScript : MonoBehaviour
         {
             pieceInteraction.AddForce(turnData.Force);
         }
+    }
+
+    public void SendScore(int teamOneScore, int teamTwoScore)
+    {
+        var scoreData = new ScoreDataDTO
+        {
+            GameId = "54321", //TODO: Replace with GameId
+            PlayerOneScore = teamOneScore,
+            PlayerTwoScore = teamTwoScore
+        };
+
+        var scoreDataJson = JsonUtility.ToJson(scoreData);
+        signalRLib.SendMessage("UpdateScore", scoreDataJson);
     }
 }
