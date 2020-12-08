@@ -29,6 +29,12 @@ public class SignalRLib
             OnTurnReceived(message);
         });
 
+        connection.On<string>("GameInitialized", (message) =>
+        {
+            OnGameInitialized(message);
+        });
+
+
         try
         {
             await connection.StartAsync();
@@ -49,7 +55,7 @@ public class SignalRLib
 #elif UNITY_WEBGL
 
     [DllImport("__Internal")]
-    private static extern void Connect(string url, string listener, Action<string> cnx, Action<string> msg);
+    private static extern void Connect(string url, string listener, Action<string> cnx, Action<string> init, Action<string> msg);
 
     [DllImport("__Internal")]
     private static extern void Invoke(string method, string message);
@@ -61,6 +67,12 @@ public class SignalRLib
     }
 
     [MonoPInvokeCallback(typeof(Action<string>))]
+    public static void InitializeCallback(string message)
+    {
+        OnGameInitialized(message);
+    }
+
+    [MonoPInvokeCallback(typeof(Action<string>))]
     public static void TurnCallback(string message)
     {
         OnTurnReceived(message);
@@ -68,7 +80,7 @@ public class SignalRLib
 
     public void Init(string hubUrl, string hubListener)
     {
-        Connect(hubUrl, hubListener, ConnectionCallback, TurnCallback);
+        Connect(hubUrl, hubListener, ConnectionCallback, InitializeCallback, TurnCallback);
     }
 
     public void SendMessage(string hubMethod, string hubMessage)
@@ -78,21 +90,29 @@ public class SignalRLib
 
 #endif
 
-    public event EventHandler<DataEventArgs> TurnReceived;
     public event EventHandler<DataEventArgs> ConnectionStarted;
-
-    private static void OnTurnReceived(string message)
-    {
-        var args = new DataEventArgs();
-        args.Data = message;
-        instance.TurnReceived?.Invoke(instance, args);
-    }
+    public event EventHandler<DataEventArgs> GameInitialized;
+    public event EventHandler<DataEventArgs> TurnReceived;
 
     private static void OnConnectionStarted(string message)
     {
         var args = new DataEventArgs();
         args.Data = message;
         instance.ConnectionStarted?.Invoke(instance, args);
+    }
+
+    private static void OnGameInitialized(string message)
+    {
+        var args = new DataEventArgs();
+        args.Data = message;
+        instance.GameInitialized?.Invoke(instance, args);
+    }
+
+    private static void OnTurnReceived(string message)
+    {
+        var args = new DataEventArgs();
+        args.Data = message;
+        instance.TurnReceived?.Invoke(instance, args);
     }
 
 }

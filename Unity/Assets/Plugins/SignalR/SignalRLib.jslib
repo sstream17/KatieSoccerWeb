@@ -3,6 +3,7 @@ var SignalRLib = {
 	$vars: {
 		connection: null,
 		cnxCallback: null,
+		initCallback: null,
 		msgCallback: null,
 		sendMessage: function (message, callback) {
 			var bufferSize = lengthBytesUTF8(message) + 1;
@@ -12,11 +13,12 @@ var SignalRLib = {
 		}
 	},
 
-	Connect: function (url, listener, cnx, msg) {
+	Connect: function (url, listener, cnx, init, msg) {
 		var hubUrl = Pointer_stringify(url);
 		var hubListener = Pointer_stringify(listener);
 
 		vars.cnxCallback = cnx;
+		vars.initCallback = init;
 		vars.msgCallback = msg;
 
 		vars.connection = new signalR.HubConnectionBuilder()
@@ -25,6 +27,10 @@ var SignalRLib = {
 
 		vars.connection.on(hubListener, function (message) {
 			vars.sendMessage(message, vars.msgCallback);
+		});
+
+		vars.connection.on('GameInitialized', function (message) {
+			vars.sendMessage(message, vars.initCallback);
 		});
 
 		vars.connection.start()
