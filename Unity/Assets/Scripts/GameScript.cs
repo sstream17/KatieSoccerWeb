@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class GameScript : MonoBehaviour
@@ -34,9 +33,6 @@ public class GameScript : MonoBehaviour
     private SignalRLib signalRLib;
 
     private const string SignalRHubURL = "https://localhost:44346/game-hub";
-
-    [DllImport("__Internal")]
-    private static extern void Ready();
 
     private void SetTeamNames(string teamOneName, string teamTwoName)
     {
@@ -106,6 +102,12 @@ public class GameScript : MonoBehaviour
         signalRLib.ConnectionStarted += (object sender, DataEventArgs e) =>
         {
             signalRLib.SendMessage("JoinGame", e.Data);
+            signalRLib.SendMessage("InitializeGame", null);
+        };
+
+        signalRLib.GameInitialized += (object sender, DataEventArgs e) =>
+        {
+            InitializeGame(e.Data);
         };
 
         signalRLib.TurnReceived += (object sender, DataEventArgs e) =>
@@ -118,7 +120,6 @@ public class GameScript : MonoBehaviour
 
     void Awake()
     {
-        Ready();
         SetupSignalR();
         scoreToWin = GameData.ScoreToWin;
 
