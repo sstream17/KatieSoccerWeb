@@ -1,4 +1,5 @@
 ﻿@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager NavigationManager
 
 <div class="scoreboard">
     <div class="player-one-data">
@@ -6,7 +7,7 @@
             @PlayerOneName
         </div>
         <div id="player-one-score">
-            0
+            @PlayerOneScore
         </div>
     </div>
     <div class="player-two-data">
@@ -14,16 +15,35 @@
             Player2
         </div>
         <div id="player-two-score">
-            0
+            @PlayerTwoScore
         </div>
     </div>
 </div>
 
 @code {
     private string PlayerOneName { get; set; }
+    private int PlayerOneScore { get; set; }
+    private int PlayerTwoScore { get; set; }
+    private HubConnection connection;
 
     protected override async Task OnInitializedAsync()
     {
         PlayerOneName = await localStorage.GetItemAsync<string>(LocalStorageKeyConstants.NameKey);
+        PlayerOneScore = 0;
+        PlayerTwoScore = 0;
+
+        connection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/game-hub"))
+            .Build();
+
+        connection.On<ScoreData>("ScoreReceived", (scoreData) =>
+        {
+            PlayerOneScore = scoreData.PlayerOneScore;
+            PlayerTwoScore = scoreData.PlayerTwoScore;
+            StateHasChanged();
+        });
+
+        await connection.StartAsync();
+        await connection.InvokeAsync("JoinGame", "54321"); //TODO: Replace with GameId
     }
 }
