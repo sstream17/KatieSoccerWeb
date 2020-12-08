@@ -18,7 +18,7 @@ public class PieceInteraction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -65,7 +65,7 @@ public class PieceInteraction : MonoBehaviour
                 launchable = false;
                 PieceAnimation.PieceLaunched();
                 var launchForce = Vector3.ClampMagnitude(targetVector * speedAdjust, speedClamp) * -Speed;
-                rb.AddForce(launchForce);
+                AddForce(launchForce);
                 GameScript.SendTurn(gameObject, launchForce);
             }
             else
@@ -73,5 +73,10 @@ public class PieceInteraction : MonoBehaviour
                 PieceAnimation.PieceDeselected();
             }
         }
+    }
+
+    public void AddForce(Vector3 force)
+    {
+        rb.AddForce(force);
     }
 }

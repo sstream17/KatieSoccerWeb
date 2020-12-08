@@ -111,6 +111,8 @@ public class GameScript : MonoBehaviour
         signalRLib.TurnReceived += (object sender, DataEventArgs e) =>
         {
             Debug.Log($"received {e.Data}");
+            var turnData = JsonUtility.FromJson<TurnDataDTO>(e.Data);
+            PlayReceivedTurn(turnData);
         };
     }
 
@@ -387,10 +389,18 @@ public class GameScript : MonoBehaviour
 
     public void PlayReceivedTurn(TurnDataDTO turnData)
     {
-        if ((turnData.Player.Equals(Team.TeamOne) && PlayerOne.IsLocal)
-            || (turnData.Player.Equals(Team.TeamTwo) && PlayerTwo.IsLocal))
+        var isPlayerOne = turnData.Player.Equals(Team.TeamOne);
+        if ((isPlayerOne && PlayerOne.IsLocal)
+            || (!isPlayerOne && PlayerTwo.IsLocal))
         {
             return;
+        }
+
+        var teamPieces = isPlayerOne ? TeamOnePieces : TeamTwoPieces;
+        var pieceInteraction = teamPieces[turnData.PieceIndex].GetComponent<PieceInteraction>();
+        if (pieceInteraction != null)
+        {
+            pieceInteraction.AddForce(turnData.Force);
         }
     }
 }
