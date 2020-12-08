@@ -33,7 +33,7 @@ public class SignalRLib
         {
             await connection.StartAsync();
 
-            OnConnectionStarted("Connection Started");
+            OnConnectionStarted("54321");  // TODO: Replace with GameId
         }
         catch (Exception ex)
         {

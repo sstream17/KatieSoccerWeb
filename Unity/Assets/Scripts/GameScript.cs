@@ -105,7 +105,7 @@ public class GameScript : MonoBehaviour
 
         signalRLib.ConnectionStarted += (object sender, DataEventArgs e) =>
         {
-            Debug.Log(e.Data);
+            signalRLib.SendMessage("JoinGame", e.Data);
         };
 
         signalRLib.TurnReceived += (object sender, DataEventArgs e) =>
@@ -149,7 +149,7 @@ public class GameScript : MonoBehaviour
     {
         Array values = Enum.GetValues(typeof(Team));
         int randomIndex = Mathf.FloorToInt(UnityEngine.Random.Range(0f, values.Length));
-        currentTurn = (Team)values.GetValue(randomIndex);
+        currentTurn = Team.TeamOne; //(Team)values.GetValue(randomIndex);
         OnNextTurn();
     }
 

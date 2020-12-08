@@ -29,7 +29,7 @@ var SignalRLib = {
 
 		vars.connection.start()
 			.then(function () {
-				vars.sendMessage('Connection Started', vars.cnxCallback);
+				vars.sendMessage('54321', vars.cnxCallback);  //TODO: Replace with GameId
 			}).catch(function (err) {
 				return console.error(err.toString());
 			});
