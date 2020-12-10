@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\KatieSoccer.csproj" />
-    <ProjectReference Include="..\Shared\KatieSoccer.Shared\KatieSoccer.Shared.csproj" />
+    <ProjectReference Include="..\..\Client\KatieSoccer.csproj" />
+    <ProjectReference Include="..\..\Shared\KatieSoccer.Shared\KatieSoccer.Shared.csproj" />
   </ItemGroup>
 
 
