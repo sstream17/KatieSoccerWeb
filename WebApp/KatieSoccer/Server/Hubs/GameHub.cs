@@ -19,7 +19,7 @@ namespace KatieSoccer.Server.Hubs
             await Clients.All.SendAsync("JoinedGame", gameId);
         }
 
-        public async Task InitializeGame()
+        public async Task InitializeGame(string _)
         {
             var data = new GameData
             {
