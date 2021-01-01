@@ -11,6 +11,7 @@ Assets/AssetStoreTools*
 ExportedObj/
 .consulo/
 *.csproj
+*.dll
 *.unityproj
 *.sln
 *.suo
