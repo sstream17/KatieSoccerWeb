@@ -28,6 +28,6 @@
 
     private async void JoinGame()
     {
-        await connection.InvokeAsync("JoinGame", "1234");
+        await connection.InvokeAsync("InitializeGame", null);
     }
 }

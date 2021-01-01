@@ -16,10 +16,28 @@ namespace KatieSoccer.Server.Accessors
 
         private IKatieSoccerDbContext KatieSoccerDbContext { get; }
 
-        public async Task AddGame(Game game)
+        public async Task AddGame(Shared.GameData gameData)
         {
             try
             {
+                var playerOne = gameData.PlayerOne;
+                var playerTwo = gameData.PlayerTwo;
+                var game = new Game
+                {
+                    PlayerOne = new Player
+                    {
+                        IsLocal = Convert.ToInt32(playerOne.IsLocal),
+                        Name = playerOne.Name,
+                        Color = playerOne.Color
+                    },
+                    PlayerTwo = new Player
+                    {
+                        IsLocal = Convert.ToInt32(playerTwo.IsLocal),
+                        Name = playerTwo.Name,
+                        Color = playerTwo.Color
+                    }
+                };
+
                 await KatieSoccerDbContext
                     .Games
                     .AddAsync(game)

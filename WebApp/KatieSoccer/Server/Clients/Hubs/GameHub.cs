@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using KatieSoccer.Server.Accessors;
 using KatieSoccer.Shared;
 using Microsoft.AspNetCore.SignalR;
 
@@ -12,6 +13,13 @@ namespace KatieSoccer.Server.Hubs
         {
             PropertyNameCaseInsensitive = true
         };
+
+        public GameHub(IGameAccessor gameAccessor)
+        {
+            GameAccessor = gameAccessor;
+        }
+
+        private IGameAccessor GameAccessor { get; }
 
         public async Task JoinGame(string gameId)
         {
@@ -36,6 +44,8 @@ namespace KatieSoccer.Server.Hubs
                     Color = "#debc97"
                 }
             };
+
+            await GameAccessor.AddGame(data);
 
             var dataJson = string.Empty;
             using (var stream = new MemoryStream())

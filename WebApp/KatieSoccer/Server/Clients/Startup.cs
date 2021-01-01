@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using KatieSoccer.Server.Accessors.ServiceCollectionExtensions;
 using KatieSoccer.Server.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +39,8 @@ namespace KatieSoccer.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSignalR();
+
+            services.AddAccessorDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
