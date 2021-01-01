@@ -24,6 +24,7 @@ namespace KatieSoccer.Server.Accessors
                 var playerTwo = gameData.PlayerTwo;
                 var game = new Game
                 {
+                    GameId = "54321",  //TODO: Replace with GameId
                     PlayerOne = new Player
                     {
                         IsLocal = Convert.ToInt32(playerOne.IsLocal),
