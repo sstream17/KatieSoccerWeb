@@ -98,6 +98,10 @@ public class GameScript : MonoBehaviour
     {
         signalRLib = new SignalRLib();
         signalRLib.Init(SignalRHubURL);
+        signalRLib.Connect();
+
+        signalRLib.AddHandler("GameInitialized");
+        signalRLib.AddHandler("TurnReceived");
 
         signalRLib.ConnectionStarted += (object sender, HandlerEventArgs e) =>
         {
