@@ -18,28 +18,27 @@ public class SignalRLib
 
     private HubConnection connection;
 
-    public async void Init(string hubUrl, string hubListener)
+    public void Init(string hubUrl)
     {
         connection = new HubConnectionBuilder()
             .WithUrl(hubUrl)
             .Build();
+    }
 
-        connection.On<string>(hubListener, (message) =>
+    public void AddHandler(string handlerName)
+    {
+        connection.On<string>(handlerName, (payload) =>
         {
-            OnTurnReceived(message);
+            OnHandlerInvoked(handlerName, payload);
         });
+    }
 
-        connection.On<string>("GameInitialized", (message) =>
-        {
-            OnGameInitialized(message);
-        });
-
-
+    public async void Connect()
+    {
         try
         {
             await connection.StartAsync();
-
-            OnConnectionStarted("54321");  // TODO: Replace with GameId
+            OnConnectionStarted(connection.ConnectionId);
         }
         catch (Exception ex)
         {
@@ -47,77 +46,93 @@ public class SignalRLib
         }
     }
 
-    public async void SendMessage(string hubMethod, string hubMessage)
+    public async void SendToHub(string hubMethod, string payload)
     {
-        await connection.InvokeAsync(hubMethod, hubMessage);
+        await connection.InvokeAsync(hubMethod, payload);
     }
 
 #elif UNITY_WEBGL
 
+    private delegate void OnConnectionCallback(string connectionId);
+    private delegate void OnHandlerCallback(string handlerName, string payload);
+
+    [MonoPInvokeCallback(typeof(OnConnectionCallback))]
+    private static void ConnectionCallback(string connectionId)
+    {
+        OnConnectionStarted(connectionId);
+    }
+
+    [MonoPInvokeCallback(typeof(OnHandlerCallback))]
+    private static void HandlerCallback(string handlerName, string payload)
+    {
+        OnHandlerInvoked(handlerName, payload);
+    }
+
     [DllImport("__Internal")]
-    private static extern void Connect(string url, string listener, Action<string> cnx, Action<string> init, Action<string> msg);
+    private static extern void InitJs(string hubUrl);
 
     [DllImport("__Internal")]
-    private static extern void Invoke(string method, string message);
+    private static extern void AddHandlerJs(string handlerName, OnHandlerCallback handlerCallback);
 
-    [MonoPInvokeCallback(typeof(Action<string>))]
-    public static void ConnectionCallback(string message)
+    [DllImport("__Internal")]
+    private static extern void ConnectJs(OnConnectionCallback connectionCallback);
+
+    [DllImport("__Internal")]
+    private static extern void SendToHubJs(string hubMethod, string payload);
+
+    public void Init(string hubUrl)
     {
-        OnConnectionStarted(message);
+        InitJs(hubUrl);
     }
 
-    [MonoPInvokeCallback(typeof(Action<string>))]
-    public static void InitializeCallback(string message)
+    public void AddHandler(string handlerName)
     {
-        OnGameInitialized(message);
+        AddHandlerJs(handlerName, HandlerCallback);
     }
 
-    [MonoPInvokeCallback(typeof(Action<string>))]
-    public static void TurnCallback(string message)
+    public void Connect()
     {
-        OnTurnReceived(message);
+        ConnectJs(ConnectionCallback);
     }
 
-    public void Init(string hubUrl, string hubListener)
+    public void SendToHub(string hubMethod, string payload)
     {
-        Connect(hubUrl, hubListener, ConnectionCallback, InitializeCallback, TurnCallback);
-    }
-
-    public void SendMessage(string hubMethod, string hubMessage)
-    {
-        Invoke(hubMethod, hubMessage);
+        SendToHubJs(hubMethod, payload);
     }
 
 #endif
 
-    public event EventHandler<DataEventArgs> ConnectionStarted;
-    public event EventHandler<DataEventArgs> GameInitialized;
-    public event EventHandler<DataEventArgs> TurnReceived;
+    public event EventHandler<ConnectionEventArgs> ConnectionStarted;
+    public event EventHandler<HandlerEventArgs> HandlerInvoked;
 
-    private static void OnConnectionStarted(string message)
+    private static void OnConnectionStarted(string connectionId)
     {
-        var args = new DataEventArgs();
-        args.Data = message;
+        var args = new ConnectionEventArgs
+        {
+            ConnectionId = connectionId
+        };
         instance.ConnectionStarted?.Invoke(instance, args);
     }
 
-    private static void OnGameInitialized(string message)
+    private static void OnHandlerInvoked(string handlerName, string payload)
     {
-        var args = new DataEventArgs();
-        args.Data = message;
-        instance.GameInitialized?.Invoke(instance, args);
-    }
-
-    private static void OnTurnReceived(string message)
-    {
-        var args = new DataEventArgs();
-        args.Data = message;
-        instance.TurnReceived?.Invoke(instance, args);
+        var args = new HandlerEventArgs
+        {
+            HandlerName = handlerName,
+            Payload = payload
+        };
+        instance.HandlerInvoked?.Invoke(instance, args);
     }
 
 }
 
-public class DataEventArgs : EventArgs
+public class ConnectionEventArgs : EventArgs
 {
-    public string Data { get; set; }
+    public string ConnectionId { get; set; }
+}
+
+public class HandlerEventArgs : EventArgs
+{
+    public string HandlerName { get; set; }
+    public string Payload { get; set; }
 }
