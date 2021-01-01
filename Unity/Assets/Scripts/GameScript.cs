@@ -97,24 +97,27 @@ public class GameScript : MonoBehaviour
     public void SetupSignalR()
     {
         signalRLib = new SignalRLib();
-        signalRLib.Init(SignalRHubURL, "TurnReceived");
+        signalRLib.Init(SignalRHubURL);
 
-        signalRLib.ConnectionStarted += (object sender, DataEventArgs e) =>
+        signalRLib.ConnectionStarted += (object sender, HandlerEventArgs e) =>
         {
-            signalRLib.SendMessage("JoinGame", e.Data);
-            signalRLib.SendMessage("InitializeGame", null);
+            signalRLib.SendToHub("JoinGame", e.Payload);
+            signalRLib.SendToHub("InitializeGame", null);
         };
 
-        signalRLib.GameInitialized += (object sender, DataEventArgs e) =>
+        signalRLib.HandlerInvoked += (object sender, HandlerEventArgs e) =>
         {
-            InitializeGame(e.Data);
-        };
-
-        signalRLib.TurnReceived += (object sender, DataEventArgs e) =>
-        {
-            Debug.Log($"received {e.Data}");
-            var turnData = JsonUtility.FromJson<TurnDataDTO>(e.Data);
-            PlayReceivedTurn(turnData);
+            switch (e.HandlerName)
+            {
+                case "GameInitialized":
+                    InitializeGame(e.Payload);
+                    break;
+                case "TurnReceived":
+                    Debug.Log($"received {e.Payload}");
+                    var turnData = JsonUtility.FromJson<TurnDataDTO>(e.Payload);
+                    PlayReceivedTurn(turnData);
+                    break;
+            }
         };
     }
 
@@ -385,7 +388,7 @@ public class GameScript : MonoBehaviour
         };
 
         var turnDataJson = JsonUtility.ToJson(turnData);
-        signalRLib.SendMessage("AddTurn", turnDataJson);
+        signalRLib.SendToHub("AddTurn", turnDataJson);
     }
 
     public void PlayReceivedTurn(TurnDataDTO turnData)
@@ -415,6 +418,6 @@ public class GameScript : MonoBehaviour
         };
 
         var scoreDataJson = JsonUtility.ToJson(scoreData);
-        signalRLib.SendMessage("UpdateScore", scoreDataJson);
+        signalRLib.SendToHub("UpdateScore", scoreDataJson);
     }
 }

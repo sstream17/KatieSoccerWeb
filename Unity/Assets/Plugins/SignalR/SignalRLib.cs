@@ -102,14 +102,14 @@ public class SignalRLib
 
 #endif
 
-    public event EventHandler<ConnectionEventArgs> ConnectionStarted;
+    public event EventHandler<HandlerEventArgs> ConnectionStarted;
     public event EventHandler<HandlerEventArgs> HandlerInvoked;
 
     private static void OnConnectionStarted(string connectionId)
     {
-        var args = new ConnectionEventArgs
+        var args = new HandlerEventArgs
         {
-            ConnectionId = connectionId
+            Payload = connectionId
         };
         instance.ConnectionStarted?.Invoke(instance, args);
     }
