@@ -40,7 +40,11 @@ var SignalRLib = {
 		var gameIdString = Pointer_stringify(gameId);
 		vars.connectionCallback = callback;
 
-		var message = gameIdString ?? vars.connection.connectionId;
+		var message = gameIdString;
+
+		if (message === null) {
+			message = vars.connection.connectionId;
+		}
 
 		vars.connection.start()
 			.then(function () {
