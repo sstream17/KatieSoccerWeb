@@ -27,11 +27,11 @@ namespace KatieSoccer.Server.Hubs
             await Clients.All.SendAsync("JoinedGame", gameId);
         }
 
-        public async Task InitializeGame(string _)
+        public async Task InitializeGame(string gameId)
         {
             var data = new GameData
             {
-                GameId = "54321", //TODO: Replace with gameId
+                GameId = gameId,
                 PlayerOne = new Player
                 {
                     IsLocal = true,
@@ -46,7 +46,10 @@ namespace KatieSoccer.Server.Hubs
                 }
             };
 
-            await GameAccessor.AddGame(data);
+            var gameCreated = await GameAccessor.EnsureGameCreated(data);
+
+            data.PlayerOne.IsLocal = gameCreated;
+            data.PlayerTwo.IsLocal = !gameCreated;
 
             var dataJson = string.Empty;
             using (var stream = new MemoryStream())

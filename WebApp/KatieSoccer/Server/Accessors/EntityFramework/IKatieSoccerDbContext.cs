@@ -1,4 +1,6 @@
-﻿using KatieSoccer.Server.Accessors.EntityFramework.Models;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using KatieSoccer.Server.Accessors.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace KatieSoccer.Server.Accessors.EntityFramework
@@ -7,6 +9,6 @@ namespace KatieSoccer.Server.Accessors.EntityFramework
     {
         DbSet<Game> Games { get; set; }
 
-        int SaveChanges();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

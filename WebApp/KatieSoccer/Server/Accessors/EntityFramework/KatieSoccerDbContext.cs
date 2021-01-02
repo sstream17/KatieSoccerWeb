@@ -7,6 +7,7 @@ namespace KatieSoccer.Server.Accessors.EntityFramework
     {
         public KatieSoccerDbContext(DbContextOptions<KatieSoccerDbContext> options) : base(options)
         {
+            Database.EnsureCreatedAsync();
         }
 
         public virtual DbSet<Game> Games { get; set; }

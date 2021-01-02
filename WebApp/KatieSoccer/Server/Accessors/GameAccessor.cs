@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using KatieSoccer.Server.Accessors.EntityFramework;
 using KatieSoccer.Server.Accessors.EntityFramework.Models;
+using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 
 namespace KatieSoccer.Server.Accessors
@@ -20,6 +22,35 @@ namespace KatieSoccer.Server.Accessors
 
         private IKatieSoccerDbContext KatieSoccerDbContext { get; }
 
+        public async Task<bool> EnsureGameCreated(Shared.GameData gameData)
+        {
+            Game game = null;
+            try
+            {
+                game = await KatieSoccerDbContext
+                    .Games
+                    .FindAsync(gameData.GameId)
+                    .ConfigureAwait(false);
+            }
+            catch (CosmosException e)
+            {
+                if (e.StatusCode != HttpStatusCode.NotFound)
+                {
+                    throw;
+                }
+            }
+
+            var gameCreated = false;
+
+            if (game == null)
+            {
+                await AddGame(gameData);
+                gameCreated = true;
+            }
+
+            return gameCreated;
+        }
+
         public async Task AddGame(Shared.GameData gameData)
         {
             try
@@ -30,8 +61,10 @@ namespace KatieSoccer.Server.Accessors
                     .Games
                     .AddAsync(game)
                     .ConfigureAwait(false);
+
+                await KatieSoccerDbContext.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (Exception e)
             {
                 throw;
             }

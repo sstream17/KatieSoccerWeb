@@ -6,6 +6,8 @@ namespace KatieSoccer.Server.Accessors
 {
     public interface IGameAccessor
     {
+        Task<bool> EnsureGameCreated(GameData gameData);
+
         Task AddGame(GameData game);
 
         Task<List<GameData>> GetGames();
