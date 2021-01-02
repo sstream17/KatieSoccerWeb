@@ -21,6 +21,9 @@
 </div>
 
 @code {
+    [Parameter]
+    public string Id { get; set; }
+
     private string PlayerOneName { get; set; }
     private int PlayerOneScore { get; set; }
     private int PlayerTwoScore { get; set; }
@@ -44,6 +47,6 @@
         });
 
         await connection.StartAsync();
-        await connection.InvokeAsync("JoinGame", "54321"); //TODO: Replace with GameId
+        await connection.InvokeAsync("JoinGame", Id);
     }
 }

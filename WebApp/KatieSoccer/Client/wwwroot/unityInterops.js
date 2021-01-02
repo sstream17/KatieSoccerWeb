@@ -1,7 +1,8 @@
 ﻿let unityInstance;
 
-window.instantiateGame = () => {
+window.instantiateGame = (gameId) => {
 	unityInstance = UnityLoader.instantiate("unityContainer", "Build/WebGL.json", { onProgress: UnityProgress });
+	unityInstance.SendMessage("Field", "SetGameId", gameId);
 }
 
 window.initializeGame = () => {

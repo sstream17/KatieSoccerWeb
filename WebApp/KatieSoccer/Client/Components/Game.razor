@@ -5,11 +5,14 @@
 </div>
 
 @code {
+    [Parameter]
+    public string Id { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("instantiateGame", null);
+            await JS.InvokeVoidAsync("instantiateGame", Id);
         }
     }
 }

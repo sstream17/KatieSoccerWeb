@@ -1,3 +1,8 @@
-﻿<Scoreboard />
+﻿<Scoreboard Id="@Id" />
 
-<Game />
+<Game Id="@Id" />
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+}

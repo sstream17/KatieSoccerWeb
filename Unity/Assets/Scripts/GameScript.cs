@@ -34,6 +34,11 @@ public class GameScript : MonoBehaviour
 
     private const string SignalRHubURL = "https://localhost:44346/game-hub";
 
+    public void SetGameId(string gameId)
+    {
+        GameData.GameId = gameId;
+    }
+
     private void SetTeamNames(string teamOneName, string teamTwoName)
     {
         GameData.SetTeamNames(teamOneName, teamTwoName);
@@ -68,6 +73,8 @@ public class GameScript : MonoBehaviour
         var gameData = JsonUtility.FromJson<GameDataDTO>(gameDataJson);
         PlayerOne = gameData.PlayerOne;
         PlayerTwo = gameData.PlayerTwo;
+        Debug.Log($"P1 Local: {PlayerOne.IsLocal}");
+        Debug.Log($"P2 Local: {PlayerTwo.IsLocal}");
 
         SetTeamNames(PlayerOne.Name, PlayerTwo.Name);
         SetTeamColors(PlayerOne.Color, PlayerTwo.Color);
@@ -98,7 +105,7 @@ public class GameScript : MonoBehaviour
     {
         signalRLib = new SignalRLib();
         signalRLib.Init(SignalRHubURL);
-        signalRLib.Connect();
+        signalRLib.Connect(GameData.GameId);
 
         signalRLib.AddHandler("GameInitialized");
         signalRLib.AddHandler("TurnReceived");
@@ -106,7 +113,7 @@ public class GameScript : MonoBehaviour
         signalRLib.ConnectionStarted += (object sender, HandlerEventArgs e) =>
         {
             signalRLib.SendToHub("JoinGame", e.Payload);
-            signalRLib.SendToHub("InitializeGame", null);
+            signalRLib.SendToHub("InitializeGame", e.Payload);
         };
 
         signalRLib.HandlerInvoked += (object sender, HandlerEventArgs e) =>
@@ -164,6 +171,8 @@ public class GameScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DisablePieceInteraction(TeamOnePieces);
+        DisablePieceInteraction(TeamTwoPieces);
         GetRandomTurn();
     }
 
@@ -230,6 +239,8 @@ public class GameScript : MonoBehaviour
 
     public void EnablePieceInteraction(GameObject[] pieces, bool isLocal)
     {
+        Debug.Log($"Can enable pieces: {isLocal}");
+
         if (!isLocal)
         {
             return;

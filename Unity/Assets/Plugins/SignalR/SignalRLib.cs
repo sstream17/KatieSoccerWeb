@@ -33,12 +33,13 @@ public class SignalRLib
         });
     }
 
-    public async void Connect()
+    public async void Connect(string gameId)
     {
         try
         {
+            var message = gameId ?? connection.ConnectionId;
             await connection.StartAsync();
-            OnConnectionStarted(connection.ConnectionId);
+            OnConnectionStarted(message);
         }
         catch (Exception ex)
         {
@@ -75,7 +76,7 @@ public class SignalRLib
     private static extern void AddHandlerJs(string handlerName, OnHandlerCallback handlerCallback);
 
     [DllImport("__Internal")]
-    private static extern void ConnectJs(OnConnectionCallback connectionCallback);
+    private static extern void ConnectJs(string gameId, OnConnectionCallback connectionCallback);
 
     [DllImport("__Internal")]
     private static extern void SendToHubJs(string hubMethod, string payload);
@@ -90,9 +91,9 @@ public class SignalRLib
         AddHandlerJs(handlerName, HandlerCallback);
     }
 
-    public void Connect()
+    public void Connect(string gameId)
     {
-        ConnectJs(ConnectionCallback);
+        ConnectJs(gameId, ConnectionCallback);
     }
 
     public void SendToHub(string hubMethod, string payload)

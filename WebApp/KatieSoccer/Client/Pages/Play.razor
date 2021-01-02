@@ -1,9 +1,17 @@
 ﻿@page "/play"
 @page "/play/{id}"
 
-<GameContainer />
+<GameContainer Id="@Id" />
 
 @code {
     [Parameter]
     public string Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Id == null)
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+    }
 }
