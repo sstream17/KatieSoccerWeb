@@ -21,13 +21,13 @@ namespace KatieSoccer.Server.Accessors.Tests
             PlayerOne = new EntityFramework.Models.Player
             {
                 Color = "red",
-                IsLocal = 1,
+                IsLocal = true,
                 Name = "player1"
             },
             PlayerTwo = new EntityFramework.Models.Player
             {
                 Color = "blue",
-                IsLocal = 0,
+                IsLocal = false,
                 Name = "player2"
             }
         };

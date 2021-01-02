@@ -5,7 +5,7 @@ namespace KatieSoccer.Server.Accessors.EntityFramework.Models
     [Owned]
     public class Player
     {
-        public int IsLocal { get; set; }
+        public bool IsLocal { get; set; }
 
         public string Name { get; set; }
 

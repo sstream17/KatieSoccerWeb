@@ -4,11 +4,12 @@ using KatieSoccer.Shared;
 
 namespace KatieSoccer.Server.Accessors.Mapping
 {
-    class GameMappingProfile : Profile
+    public class GameMappingProfile : Profile
     {
         public GameMappingProfile()
         {
-            CreateMap<Game, GameData>();
+            CreateMap<Game, GameData>()
+                .ReverseMap();
         }
     }
 }

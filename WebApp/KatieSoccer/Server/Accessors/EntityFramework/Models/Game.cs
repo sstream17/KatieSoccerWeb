@@ -7,7 +7,7 @@ namespace KatieSoccer.Server.Accessors.EntityFramework.Models
         [Key]
         public string GameId { get; set; }
 
-        public int IsOnline { get; set; }
+        public bool IsOnline { get; set; }
 
         public Player PlayerOne { get; set; }
 

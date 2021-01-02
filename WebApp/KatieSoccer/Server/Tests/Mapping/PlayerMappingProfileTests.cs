@@ -39,7 +39,7 @@ namespace KatieSoccer.Server.Accessors.Tests.Mapping
             var expectedPlayerModel = new EntityFramework.Models.Player
             {
                 Color = "red",
-                IsLocal = 1,
+                IsLocal = true,
                 Name = "Player1"
             };
 
@@ -57,7 +57,7 @@ namespace KatieSoccer.Server.Accessors.Tests.Mapping
             var testPlayerModel = new EntityFramework.Models.Player
             {
                 Color = "red",
-                IsLocal = 1,
+                IsLocal = true,
                 Name = "Player1"
             };
 
