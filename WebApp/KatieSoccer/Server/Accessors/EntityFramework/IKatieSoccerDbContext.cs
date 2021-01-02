@@ -7,8 +7,6 @@ namespace KatieSoccer.Server.Accessors.EntityFramework
     {
         DbSet<Game> Games { get; set; }
 
-        DbSet<Player> Players { get; set; }
-
         int SaveChanges();
     }
 }
