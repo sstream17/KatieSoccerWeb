@@ -3,7 +3,7 @@ using AutoMapper;
 
 namespace KatieSoccer.Server.Accessors.Mapping
 {
-    class PlayerMappingProfile : Profile
+    public class PlayerMappingProfile : Profile
     {
         public PlayerMappingProfile()
         {
