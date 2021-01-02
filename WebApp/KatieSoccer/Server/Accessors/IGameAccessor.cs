@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using KatieSoccer.Server.Accessors.EntityFramework.Models;
 using KatieSoccer.Shared;
 
 namespace KatieSoccer.Server.Accessors
@@ -9,6 +8,6 @@ namespace KatieSoccer.Server.Accessors
     {
         Task AddGame(GameData game);
 
-        Task<List<Game>> GetGames();
+        Task<List<GameData>> GetGames();
     }
 }

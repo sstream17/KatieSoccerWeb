@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using KatieSoccer.Server.Accessors.EntityFramework;
 using KatieSoccer.Server.Accessors.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +10,13 @@ namespace KatieSoccer.Server.Accessors
 {
     public class GameAccessor : IGameAccessor
     {
-        public GameAccessor(IKatieSoccerDbContext katieSoccerDbContext)
+        public GameAccessor(IMapper mapper, IKatieSoccerDbContext katieSoccerDbContext)
         {
+            Mapper = mapper;
             KatieSoccerDbContext = katieSoccerDbContext;
         }
+
+        private IMapper Mapper { get; }
 
         private IKatieSoccerDbContext KatieSoccerDbContext { get; }
 
@@ -20,24 +24,7 @@ namespace KatieSoccer.Server.Accessors
         {
             try
             {
-                var playerOne = gameData.PlayerOne;
-                var playerTwo = gameData.PlayerTwo;
-                var game = new Game
-                {
-                    GameId = "54321",  //TODO: Replace with GameId
-                    PlayerOne = new Player
-                    {
-                        IsLocal = Convert.ToInt32(playerOne.IsLocal),
-                        Name = playerOne.Name,
-                        Color = playerOne.Color
-                    },
-                    PlayerTwo = new Player
-                    {
-                        IsLocal = Convert.ToInt32(playerTwo.IsLocal),
-                        Name = playerTwo.Name,
-                        Color = playerTwo.Color
-                    }
-                };
+                var game = Mapper.Map<Game>(gameData);
 
                 await KatieSoccerDbContext
                     .Games
@@ -50,7 +37,7 @@ namespace KatieSoccer.Server.Accessors
             }
         }
 
-        public async Task<List<Game>> GetGames()
+        public async Task<List<Shared.GameData>> GetGames()
         {
             try
             {
@@ -59,7 +46,7 @@ namespace KatieSoccer.Server.Accessors
                     .ToListAsync()
                     .ConfigureAwait(false);
 
-                return games;
+                return Mapper.Map<List<Shared.GameData>>(games);
             }
             catch (Exception)
             {

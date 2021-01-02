@@ -1,4 +1,6 @@
-﻿using KatieSoccer.Server.Accessors.EntityFramework;
+﻿using System;
+using AutoMapper;
+using KatieSoccer.Server.Accessors.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,6 +10,8 @@ namespace KatieSoccer.Server.Accessors.ServiceCollectionExtensions
     {
         public static void AddAccessorDependencies(this IServiceCollection services)
         {
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddTransient<IGameAccessor, GameAccessor>();
 
             services.AddTransient<IKatieSoccerDbContext, KatieSoccerDbContext>();

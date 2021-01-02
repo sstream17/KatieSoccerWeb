@@ -31,6 +31,7 @@ namespace KatieSoccer.Server.Hubs
         {
             var data = new GameData
             {
+                GameId = "54321", //TODO: Replace with gameId
                 PlayerOne = new Player
                 {
                     IsLocal = true,
