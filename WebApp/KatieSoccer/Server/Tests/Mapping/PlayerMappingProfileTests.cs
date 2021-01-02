@@ -57,14 +57,14 @@ namespace KatieSoccer.Server.Accessors.Tests.Mapping
             var testPlayerModel = new EntityFramework.Models.Player
             {
                 Color = "red",
-                IsLocal = true,
+                IsLocal = false,
                 Name = "Player1"
             };
 
             var expectedPlayer = new Shared.Player
             {
                 Color = "red",
-                IsLocal = true,
+                IsLocal = false,
                 Name = "Player1"
             };
 
