@@ -108,6 +108,7 @@ public class GameScript : MonoBehaviour
 
     public void SetupSignalR(string gameId)
     {
+        SetGameId(gameId);
         signalRLib = new SignalRLib();
         signalRLib.Init(SignalRHubURL);
         Debug.Log($"Connecting to game {gameId}");
@@ -128,6 +129,7 @@ public class GameScript : MonoBehaviour
             {
                 case "GameInitialized":
                     InitializeGame(e.Payload);
+                    OnNextTurn();
                     break;
                 case "TurnReceived":
                     Debug.Log($"received {e.Payload}");
@@ -402,7 +404,7 @@ public class GameScript : MonoBehaviour
         var pieceIndex = Array.IndexOf(teamPieces, piece);
         var turnData = new TurnDataDTO
         {
-            GameId = "54321",
+            GameId = GameData.GameId,
             Player = (int)currentTurn,
             PieceIndex = pieceIndex,
             Force = force
@@ -433,7 +435,7 @@ public class GameScript : MonoBehaviour
     {
         var scoreData = new ScoreDataDTO
         {
-            GameId = "54321", //TODO: Replace with GameId
+            GameId = GameData.GameId,
             PlayerOneScore = teamOneScore,
             PlayerTwoScore = teamTwoScore
         };
