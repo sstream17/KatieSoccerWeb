@@ -416,7 +416,7 @@ public class GameScript : MonoBehaviour
 
     public void PlayReceivedTurn(TurnDataDTO turnData)
     {
-        var isPlayerOne = turnData.Player.Equals(Team.TeamOne);
+        var isPlayerOne = turnData.Player.Equals((int)Team.TeamOne);
         if ((isPlayerOne && PlayerOne.IsLocal)
             || (!isPlayerOne && PlayerTwo.IsLocal))
         {
