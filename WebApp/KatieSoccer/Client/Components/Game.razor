@@ -12,6 +12,7 @@
     {
         if (firstRender)
         {
+            Console.WriteLine($"Instantiating game: {Id}");
             await JS.InvokeVoidAsync("instantiateGame", Id);
         }
     }

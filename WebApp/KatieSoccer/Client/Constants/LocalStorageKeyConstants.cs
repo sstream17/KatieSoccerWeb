@@ -4,5 +4,6 @@
     {
         public static string NameKey = "name";
         public static string ColorKey = "color";
+        public static string GameIdKey = "gameId";
     }
 }

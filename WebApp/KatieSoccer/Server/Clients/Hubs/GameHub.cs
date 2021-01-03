@@ -60,7 +60,7 @@ namespace KatieSoccer.Server.Hubs
                 dataJson = await reader.ReadToEndAsync();
             };
 
-            await Clients.All.SendAsync("GameInitialized", dataJson);
+            await Clients.Client(Context.ConnectionId).SendAsync("GameInitialized", dataJson);
         }
 
         public async Task AddTurn(string dataJson)

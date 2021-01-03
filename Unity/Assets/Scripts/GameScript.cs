@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class GameScript : MonoBehaviour
@@ -34,8 +35,12 @@ public class GameScript : MonoBehaviour
 
     private const string SignalRHubURL = "https://localhost:44346/game-hub";
 
+    [DllImport("__Internal")]
+    private static extern void Ready();
+
     public void SetGameId(string gameId)
     {
+        Debug.Log($"Setting gameId: {gameId}");
         GameData.GameId = gameId;
     }
 
@@ -101,11 +106,12 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    public void SetupSignalR()
+    public void SetupSignalR(string gameId)
     {
         signalRLib = new SignalRLib();
         signalRLib.Init(SignalRHubURL);
-        signalRLib.Connect(GameData.GameId);
+        Debug.Log($"Connecting to game {gameId}");
+        signalRLib.Connect(gameId);
 
         signalRLib.AddHandler("GameInitialized");
         signalRLib.AddHandler("TurnReceived");
@@ -134,7 +140,7 @@ public class GameScript : MonoBehaviour
 
     void Awake()
     {
-        SetupSignalR();
+        Ready();
         scoreToWin = GameData.ScoreToWin;
 
         int numberOfAllPieces = TeamOnePieces.Length + TeamTwoPieces.Length + 1;

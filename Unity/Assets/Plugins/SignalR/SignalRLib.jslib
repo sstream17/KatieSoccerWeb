@@ -62,8 +62,11 @@ var SignalRLib = {
 			.catch(function (err) {
 				return console.error(err.toString());
 			});
-	}
+	},
 
+	Ready: function () {
+		initializeGame();
+	}
 };
 
 autoAddDeps(SignalRLib, '$vars');
