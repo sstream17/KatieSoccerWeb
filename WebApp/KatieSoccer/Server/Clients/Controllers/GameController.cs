@@ -20,7 +20,7 @@ namespace KatieSoccer.Server.Controllers
         public async Task<IActionResult> CreateGame(GameData gameData)
         {
             await GameAccessor.AddGame(gameData);
-            return Created("/play", null);
+            return Created("/play", gameData);
         }
     }
 }

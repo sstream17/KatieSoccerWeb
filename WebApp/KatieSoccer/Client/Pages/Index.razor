@@ -71,8 +71,11 @@
             IsOnline = true
         };
 
-        await Http.PostAsJsonAsync(NavigationManager.ToAbsoluteUri("/game"), game);
+        var response = await Http.PostAsJsonAsync(NavigationManager.ToAbsoluteUri("/game"), game);
 
-        NavigationManager.NavigateTo($"play/{gameId}");
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo($"play/{gameId}");
+        }
     }
 }
