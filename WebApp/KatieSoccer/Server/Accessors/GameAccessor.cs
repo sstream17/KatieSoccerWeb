@@ -102,6 +102,23 @@ namespace KatieSoccer.Server.Accessors
             }
         }
 
+        public async Task<Shared.GameData> GetGame(string gameId)
+        {
+            try
+            {
+                var game = await KatieSoccerDbContext
+                    .Games
+                    .FindAsync(gameId)
+                    .ConfigureAwait(false);
+
+                return Mapper.Map<Shared.GameData>(game);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<List<Shared.GameData>> GetGames()
         {
             try
