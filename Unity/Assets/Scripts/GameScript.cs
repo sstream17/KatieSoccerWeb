@@ -58,7 +58,7 @@ public class GameScript : MonoBehaviour
 
         if (!ColorUtility.TryParseHtmlString(teamTwoHexColor, out Color teamTwoColor))
         {
-            teamOneColor = PieceColors.Blue;
+            teamTwoColor = PieceColors.Blue;
         }
 
         GameData.SetTeamColors(teamOneColor, teamTwoColor);
