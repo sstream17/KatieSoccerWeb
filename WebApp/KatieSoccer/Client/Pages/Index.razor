@@ -1,5 +1,7 @@
 ﻿@page "/"
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
 
 
 <div class="column center space-evenly">
@@ -28,7 +30,7 @@
         <div class="column center space-evenly w-100">
             <h2>Play Online</h2>
             <div class="row center space-evenly">
-                <a href="/play/1234">Create Match</a>
+                <button @onclick="CreateGame">Create Match</button>
                 <a href="/play/1234">Join Match</a>
             </div>
         </div>
@@ -57,5 +59,20 @@
         var value = e.Value.ToString();
         Color = value;
         await localStorage.SetItemAsync(LocalStorageKeyConstants.ColorKey, value);
+    }
+
+    private async Task CreateGame()
+    {
+        var random = new Random();
+        var gameId = random.Next(0, 10000000).ToString("D7");
+        var game = new GameData
+        {
+            GameId = gameId,
+            IsOnline = true
+        };
+
+        await Http.PostAsJsonAsync(NavigationManager.ToAbsoluteUri("/game"), game);
+
+        NavigationManager.NavigateTo($"play/{gameId}");
     }
 }
