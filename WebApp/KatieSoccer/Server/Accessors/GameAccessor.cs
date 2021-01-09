@@ -70,6 +70,38 @@ namespace KatieSoccer.Server.Accessors
             }
         }
 
+        public async Task<bool> AddPlayer(string gameId, Shared.Player playerToAdd)
+        {
+            try
+            {
+                var game = await KatieSoccerDbContext
+                    .Games
+                    .FindAsync(gameId)
+                    .ConfigureAwait(false);
+
+                var player = Mapper.Map<Player>(playerToAdd);
+                var isPlayerOne = false;
+
+                if (game.PlayerOne == null)
+                {
+                    game.PlayerOne = player;
+                    isPlayerOne = true;
+                }
+                else if (game.PlayerTwo == null)
+                {
+                    game.PlayerTwo = player;
+                }
+
+                await KatieSoccerDbContext.SaveChangesAsync();
+
+                return isPlayerOne;
+            }
+            catch (CosmosException e)
+            {
+                throw;
+            }
+        }
+
         public async Task<List<Shared.GameData>> GetGames()
         {
             try

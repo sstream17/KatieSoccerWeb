@@ -22,5 +22,13 @@ namespace KatieSoccer.Server.Controllers
             await GameAccessor.AddGame(gameData);
             return Created("/play", gameData);
         }
+
+        [HttpPut]
+        [Route("{gameId}")]
+        public async Task<IActionResult> AddPlayer(string gameId, Player player)
+        {
+            var isPlayerOne = await GameAccessor.AddPlayer(gameId, player);
+            return Ok(isPlayerOne);
+        }
     }
 }

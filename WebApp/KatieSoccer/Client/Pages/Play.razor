@@ -1,6 +1,8 @@
 ﻿@page "/play"
 @page "/play/{id}"
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
 
 <GameContainer Id="@Id" />
 
@@ -16,5 +18,17 @@
         }
 
         await localStorage.SetItemAsync(LocalStorageKeyConstants.GameIdKey, Id);
+
+        var name = await localStorage.GetItemAsync<string>(LocalStorageKeyConstants.NameKey);
+        var color = await localStorage.GetItemAsync<string>(LocalStorageKeyConstants.ColorKey);
+
+        var player = new Player
+        {
+            Name = name,
+            Color = color,
+            IsLocal = true
+        };
+
+        var response = await Http.PutAsJsonAsync(NavigationManager.ToAbsoluteUri($"/game/{Id}"), player);
     }
 }

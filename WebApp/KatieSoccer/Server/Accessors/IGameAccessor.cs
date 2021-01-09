@@ -10,6 +10,8 @@ namespace KatieSoccer.Server.Accessors
 
         Task AddGame(GameData game);
 
+        Task<bool> AddPlayer(string gameId, Player playerToAdd);
+
         Task<List<GameData>> GetGames();
     }
 }
