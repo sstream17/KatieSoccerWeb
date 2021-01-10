@@ -75,11 +75,18 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    public void InitializeGame(string gameDataJson)
+    private void InitializeGame(string gameDataJson)
     {
         var gameData = JsonUtility.FromJson<GameDataDTO>(gameDataJson);
         PlayerOne = gameData.PlayerOne;
         PlayerTwo = gameData.PlayerTwo;
+
+        if (alreadySetLocalPlayers)
+        {
+            Debug.Log("Resetting local players");
+            PlayerOne.IsLocal = GameData.PlayerOneLocal;
+            PlayerTwo.IsLocal = GameData.PlayerTwoLocal;
+        }
 
         Debug.Log($"P1 Local: {PlayerOne.IsLocal}");
         Debug.Log($"P2 Local: {PlayerTwo.IsLocal}");
@@ -101,15 +108,11 @@ public class GameScript : MonoBehaviour
             0.79f);
     }
 
-    public void SetLocalPlayers(string localDataJson)
+    private void SetLocalPlayers(string localDataJson)
     {
-        if (alreadySetLocalPlayers)
-        {
-            Debug.Log("Skipping setting local players");
-            return;
-        }
-
         var localData = JsonUtility.FromJson<LocalDataDTO>(localDataJson);
+        GameData.PlayerOneLocal = localData.PlayerOneLocal;
+        GameData.PlayerTwoLocal = localData.PlayerTwoLocal;
         PlayerOne.IsLocal = localData.PlayerOneLocal;
         PlayerTwo.IsLocal = localData.PlayerTwoLocal;
 
@@ -141,6 +144,7 @@ public class GameScript : MonoBehaviour
         signalRLib.ConnectionStarted += (object sender, HandlerEventArgs e) =>
         {
             signalRLib.SendToHub("JoinGame", e.Payload);
+            signalRLib.SendToHub("SetPlayerConnectionId", e.Payload);
             signalRLib.SendToHub("InitializeGame", e.Payload);
         };
 
@@ -149,10 +153,12 @@ public class GameScript : MonoBehaviour
             switch (e.HandlerName)
             {
                 case "GameInitialized":
+                    DisableAllPieceInteraction();
                     InitializeGame(e.Payload);
                     OnNextTurn();
                     break;
                 case "LocalPlayersSet":
+                    DisableAllPieceInteraction();
                     SetLocalPlayers(e.Payload);
                     OnNextTurn();
                     break;
@@ -201,11 +207,16 @@ public class GameScript : MonoBehaviour
         OnNextTurn();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void DisableAllPieceInteraction()
     {
         DisablePieceInteraction(TeamOnePieces);
         DisablePieceInteraction(TeamTwoPieces);
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        DisableAllPieceInteraction();
         GetRandomTurn();
     }
 

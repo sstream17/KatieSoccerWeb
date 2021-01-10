@@ -102,6 +102,32 @@ namespace KatieSoccer.Server.Accessors
             }
         }
 
+        public async Task SetPlayerConnectionId(string gameId, string connectionId)
+        {
+            try
+            {
+                var game = await KatieSoccerDbContext
+                    .Games
+                    .FindAsync(gameId)
+                    .ConfigureAwait(false);
+
+                if (string.IsNullOrEmpty(game.PlayerOne.ConnectionId))
+                {
+                    game.PlayerOne.ConnectionId = connectionId;
+                }
+                else if (string.IsNullOrEmpty(game.PlayerTwo.ConnectionId))
+                {
+                    game.PlayerTwo.ConnectionId = connectionId;
+                }
+
+                await KatieSoccerDbContext.SaveChangesAsync();
+            }
+            catch (CosmosException e)
+            {
+                throw;
+            }
+        }
+
         public async Task<Shared.GameData> GetGame(string gameId)
         {
             try

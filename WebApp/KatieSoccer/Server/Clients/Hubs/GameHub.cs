@@ -27,23 +27,31 @@ namespace KatieSoccer.Server.Hubs
             await Clients.All.SendAsync("JoinedGame", gameId);
         }
 
+        public async Task SetPlayerConnectionId(string gameId)
+        {
+            await GameAccessor.SetPlayerConnectionId(gameId, Context.ConnectionId);
+        }
+
         public async Task InitializeGame(string gameId)
         {
             var data = await GameAccessor.GetGame(gameId);
 
             var playerOneLocal = false;
             var playerTwoLocal = false;
-            if (data.IsOnline && data.PlayerTwo == null)
+            
+            if (data.IsOnline && data.PlayerOne.ConnectionId.Equals(Context.ConnectionId))
             {
                 playerOneLocal = true;
                 playerTwoLocal = false;
             }
-            else if (data.IsOnline)
+            else if (data.IsOnline
+                && data.PlayerTwo != null
+                && data.PlayerTwo.ConnectionId.Equals(Context.ConnectionId))
             {
                 playerOneLocal = false;
                 playerTwoLocal = true;
             }
-            else
+            else if (!data.IsOnline)
             {
                 playerOneLocal = true;
                 playerTwoLocal = true;

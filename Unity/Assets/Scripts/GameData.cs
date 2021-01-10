@@ -8,6 +8,8 @@ public static class GameData
     public static Color TeamTwoColor = PieceColors.Blue;
     public static int ScoreToWin = 3;
     public static string GameId = null;
+    public static bool PlayerOneLocal = true;
+    public static bool PlayerTwoLocal = true;
 
     public static void SetTeamNames(string teamOneName, string teamTwoName)
     {
