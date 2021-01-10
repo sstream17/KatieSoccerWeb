@@ -7,6 +7,8 @@ public class PieceInteraction : MonoBehaviour
     public PieceAnimation PieceAnimation;
     public GameScript GameScript;
 
+    public bool interactionsEnabled = false;
+
     private bool isSelected = false;
     private float triggerOffset = 0.3f;
     private float speedClamp = 5f;
@@ -15,40 +17,48 @@ public class PieceInteraction : MonoBehaviour
     private bool launchable = false;
     private Vector3 targetVector;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+    private Vector3 cachedForce = Vector3.zero;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (isSelected)
+        if (interactionsEnabled)
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            targetVector = mousePosition - transform.position;
-            targetVector.z = 0f;
-            arrow = new Vector3(targetVector.x, 0f, targetVector.y);
-            PieceAnimation.ArrowDirection = Vector3.ClampMagnitude(-arrow, PieceAnimation.MaxArrowLength);
-            if (targetVector.magnitude >= triggerOffset)
+            if (isSelected)
             {
-                PieceAnimation.PieceSelected();
-                PieceAnimation.DrawArrow();
-                launchable = true;
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                targetVector = mousePosition - transform.position;
+                targetVector.z = 0f;
+                arrow = new Vector3(targetVector.x, 0f, targetVector.y);
+                PieceAnimation.ArrowDirection = Vector3.ClampMagnitude(-arrow, PieceAnimation.MaxArrowLength);
+                if (targetVector.magnitude >= triggerOffset)
+                {
+                    PieceAnimation.PieceSelected();
+                    PieceAnimation.DrawArrow();
+                    launchable = true;
+                }
+                else
+                {
+                    PieceAnimation.PieceDeselected();
+                    PieceAnimation.HideArrow();
+                    launchable = false;
+                }
             }
-            else
-            {
-                PieceAnimation.PieceDeselected();
-                PieceAnimation.HideArrow();
-                launchable = false;
-            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (cachedForce.magnitude != 0f)
+        {
+            rb.AddForce(cachedForce);
+            cachedForce = Vector3.zero;
         }
     }
 
     private void OnMouseDown()
     {
-        if (this.enabled)
+        if (interactionsEnabled)
         {
             isSelected = true;
         }
@@ -56,7 +66,7 @@ public class PieceInteraction : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (this.enabled)
+        if (interactionsEnabled)
         {
             isSelected = false;
             PieceAnimation.HideArrow();
@@ -77,6 +87,7 @@ public class PieceInteraction : MonoBehaviour
 
     public void AddForce(Vector3 force)
     {
-        rb.AddForce(force);
+        cachedForce = force;
+        Debug.Log($"Adding force with magnitude {cachedForce.magnitude}");
     }
 }

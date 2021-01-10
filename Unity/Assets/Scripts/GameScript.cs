@@ -293,7 +293,7 @@ public class GameScript : MonoBehaviour
         foreach (GameObject piece in pieces)
         {
             PieceInteraction pieceInteraction = piece.GetComponent<PieceInteraction>();
-            pieceInteraction.enabled = true;
+            pieceInteraction.interactionsEnabled = true;
         }
     }
 
@@ -302,7 +302,7 @@ public class GameScript : MonoBehaviour
         foreach (GameObject piece in pieces)
         {
             PieceInteraction pieceInteraction = piece.GetComponent<PieceInteraction>();
-            pieceInteraction.enabled = false;
+            pieceInteraction.interactionsEnabled = false;
         }
     }
 
