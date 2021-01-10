@@ -1126,9 +1126,9 @@ Rigidbody:
   m_AngularDrag: 0.6
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 8
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!135 &338738137
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7018,16 +7018,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 409350870181283639, guid: faf9d6b6b88a608498b4b80bdc1326f4,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: df004c41b068452428eeaa5894363d7a, type: 2}
     - target: {fileID: 409350870181283635, guid: faf9d6b6b88a608498b4b80bdc1326f4,
         type: 3}
       propertyPath: GameScript
       value: 
       objectReference: {fileID: 880450126}
+    - target: {fileID: 409350870181283639, guid: faf9d6b6b88a608498b4b80bdc1326f4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: df004c41b068452428eeaa5894363d7a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: faf9d6b6b88a608498b4b80bdc1326f4, type: 3}
 --- !u!4 &684772058 stripped
@@ -8630,16 +8630,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 409350870181283639, guid: faf9d6b6b88a608498b4b80bdc1326f4,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: df004c41b068452428eeaa5894363d7a, type: 2}
     - target: {fileID: 409350870181283635, guid: faf9d6b6b88a608498b4b80bdc1326f4,
         type: 3}
       propertyPath: GameScript
       value: 
       objectReference: {fileID: 880450126}
+    - target: {fileID: 409350870181283639, guid: faf9d6b6b88a608498b4b80bdc1326f4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: df004c41b068452428eeaa5894363d7a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: faf9d6b6b88a608498b4b80bdc1326f4, type: 3}
 --- !u!4 &1434138587 stripped
@@ -9520,16 +9520,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 409350870181283639, guid: faf9d6b6b88a608498b4b80bdc1326f4,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: df004c41b068452428eeaa5894363d7a, type: 2}
     - target: {fileID: 409350870181283635, guid: faf9d6b6b88a608498b4b80bdc1326f4,
         type: 3}
       propertyPath: GameScript
       value: 
       objectReference: {fileID: 880450126}
+    - target: {fileID: 409350870181283639, guid: faf9d6b6b88a608498b4b80bdc1326f4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: df004c41b068452428eeaa5894363d7a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: faf9d6b6b88a608498b4b80bdc1326f4, type: 3}
 --- !u!4 &2026037613 stripped
