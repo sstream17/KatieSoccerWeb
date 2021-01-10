@@ -18,6 +18,8 @@ public class GameScript : MonoBehaviour
     private Player PlayerOne;
     private Player PlayerTwo;
 
+    private bool alreadySetLocalPlayers = false;
+
     private GameObject[] allPieces;
     private Vector3[] startingPositions;
     private Team currentTurn;
@@ -78,6 +80,7 @@ public class GameScript : MonoBehaviour
         var gameData = JsonUtility.FromJson<GameDataDTO>(gameDataJson);
         PlayerOne = gameData.PlayerOne;
         PlayerTwo = gameData.PlayerTwo;
+
         Debug.Log($"P1 Local: {PlayerOne.IsLocal}");
         Debug.Log($"P2 Local: {PlayerTwo.IsLocal}");
 
@@ -98,6 +101,23 @@ public class GameScript : MonoBehaviour
             0.79f);
     }
 
+    public void SetLocalPlayers(string localDataJson)
+    {
+        if (alreadySetLocalPlayers)
+        {
+            Debug.Log("Skipping setting local players");
+            return;
+        }
+
+        var localData = JsonUtility.FromJson<LocalDataDTO>(localDataJson);
+        PlayerOne.IsLocal = localData.PlayerOneLocal;
+        PlayerTwo.IsLocal = localData.PlayerTwoLocal;
+
+        Debug.Log($"P1 Set Local: {PlayerOne.IsLocal}");
+        Debug.Log($"P2 Set Local: {PlayerTwo.IsLocal}");
+        alreadySetLocalPlayers = true;
+    }
+
     public void SetStartingPositions()
     {
         for (int i = 0; i < allPieces.Length; i++)
@@ -115,6 +135,7 @@ public class GameScript : MonoBehaviour
         signalRLib.Connect(gameId);
 
         signalRLib.AddHandler("GameInitialized");
+        signalRLib.AddHandler("LocalPlayersSet");
         signalRLib.AddHandler("TurnReceived");
 
         signalRLib.ConnectionStarted += (object sender, HandlerEventArgs e) =>
@@ -129,6 +150,10 @@ public class GameScript : MonoBehaviour
             {
                 case "GameInitialized":
                     InitializeGame(e.Payload);
+                    OnNextTurn();
+                    break;
+                case "LocalPlayersSet":
+                    SetLocalPlayers(e.Payload);
                     OnNextTurn();
                     break;
                 case "TurnReceived":

@@ -31,6 +31,24 @@ namespace KatieSoccer.Server.Hubs
         {
             var data = await GameAccessor.GetGame(gameId);
 
+            var playerOneLocal = false;
+            var playerTwoLocal = false;
+            if (data.IsOnline && data.PlayerTwo == null)
+            {
+                playerOneLocal = true;
+                playerTwoLocal = false;
+            }
+            else if (data.IsOnline)
+            {
+                playerOneLocal = false;
+                playerTwoLocal = true;
+            }
+            else
+            {
+                playerOneLocal = true;
+                playerTwoLocal = true;
+            }
+
             var dataJson = string.Empty;
             using (var stream = new MemoryStream())
             {
@@ -40,7 +58,23 @@ namespace KatieSoccer.Server.Hubs
                 dataJson = await reader.ReadToEndAsync();
             };
 
-            await Clients.Client(Context.ConnectionId).SendAsync("GameInitialized", dataJson);
+            await Clients.Group(gameId).SendAsync("GameInitialized", dataJson);
+            await SetLocalPlayers(playerOneLocal, playerTwoLocal);
+        }
+
+        public async Task SetLocalPlayers(bool playerOne, bool playerTwo)
+        {
+            var data = new { PlayerOneLocal = playerOne, PlayerTwoLocal = playerTwo };
+            var dataJson = string.Empty;
+            using (var stream = new MemoryStream())
+            {
+                await JsonSerializer.SerializeAsync(stream, data);
+                stream.Position = 0;
+                using var reader = new StreamReader(stream);
+                dataJson = await reader.ReadToEndAsync();
+            };
+
+            await Clients.Client(Context.ConnectionId).SendAsync("LocalPlayersSet", dataJson);
         }
 
         public async Task AddTurn(string dataJson)
