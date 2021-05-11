@@ -49,11 +49,11 @@ public class KatieSoccerNetworkManager : NetworkManager
             playerOneConnectionId = conn.connectionId;
             var player = Instantiate(playerPrefab);
 
-            var transforms = player.GetComponentsInChildren<Transform>();
-
-            for (var i = 0; i < transforms.Length; i++)
+            int i = 0;
+            foreach (Transform child in player.transform)
             {
-                transform.position = TeamOneSpawns[i].position;
+                child.position = TeamOneSpawns[i].position;
+                i++;
             }
         }
         else if (numPlayers == 1 && playerOneConnectionId.HasValue)
@@ -63,11 +63,11 @@ public class KatieSoccerNetworkManager : NetworkManager
 
             var player = Instantiate(playerPrefab);
 
-            var transforms = player.GetComponentsInChildren<Transform>();
-
-            for (var i = 0; i < transforms.Length; i++)
+            int i = 0;
+            foreach (Transform child in player.transform)
             {
-                transform.position = TeamTwoSpawns[i].position;
+                child.position = TeamTwoSpawns[i].position;
+                i++;
             }
         }
         else if (numPlayers == 1 && playerTwoConnectionId.HasValue)
@@ -77,11 +77,11 @@ public class KatieSoccerNetworkManager : NetworkManager
 
             var player = Instantiate(playerPrefab);
 
-            var transforms = player.GetComponentsInChildren<Transform>();
-
-            for (var i = 0; i < transforms.Length; i++)
+            int i = 0;
+            foreach (Transform child in player.transform)
             {
-                transform.position = TeamOneSpawns[i].position;
+                child.position = TeamOneSpawns[i].position;
+                i++;
             }
         }
     }
