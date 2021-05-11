@@ -162,11 +162,6 @@ public class GameScript : MonoBehaviour
                     SetLocalPlayers(e.Payload);
                     OnNextTurn();
                     break;
-                case "TurnReceived":
-                    Debug.Log($"received {e.Payload}");
-                    var turnData = JsonUtility.FromJson<TurnDataDTO>(e.Payload);
-                    PlayReceivedTurn(turnData);
-                    break;
             }
         };
     }
@@ -432,26 +427,6 @@ public class GameScript : MonoBehaviour
     public void SetUnpaused()
     {
         wasPaused = false;
-    }
-
-    public void SendTurn(GameObject piece, Vector3 force)
-    {
-        var teamPieces = currentTurn.Equals(Team.TeamOne) ? TeamOnePieces : TeamTwoPieces;
-        var pieceIndex = Array.IndexOf(teamPieces, piece);
-        var turnData = new TurnDataDTO
-        {
-            GameId = GameData.GameId,
-            Player = (int)currentTurn,
-            PieceIndex = pieceIndex,
-            Force = force
-        };
-
-        var turnDataJson = JsonUtility.ToJson(turnData);
-        signalRLib.SendToHub("AddTurn", turnDataJson);
-    }
-
-    public void PlayReceivedTurn(TurnDataDTO turnData)
-    {
     }
 
     public void SendScore(int teamOneScore, int teamTwoScore)
