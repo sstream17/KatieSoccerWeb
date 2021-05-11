@@ -2,10 +2,10 @@
 
 public class PieceInteraction : MonoBehaviour
 {
-    public Rigidbody rb;
+    public int PieceIndex;
     public float Speed = 200f;
     public PieceAnimation PieceAnimation;
-    public GameScript GameScript;
+    public KatieSoccerPlayer Player;
 
     public bool interactionsEnabled = false;
 
@@ -47,15 +47,6 @@ public class PieceInteraction : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        if (cachedForce.magnitude != 0f)
-        {
-            rb.AddForce(cachedForce);
-            cachedForce = Vector3.zero;
-        }
-    }
-
     private void OnMouseDown()
     {
         if (interactionsEnabled)
@@ -75,19 +66,12 @@ public class PieceInteraction : MonoBehaviour
                 launchable = false;
                 PieceAnimation.PieceLaunched();
                 var launchForce = Vector3.ClampMagnitude(targetVector * speedAdjust, speedClamp) * -Speed;
-                AddForce(launchForce);
-                GameScript.SendTurn(gameObject, launchForce);
+                Player.CmdPlayTurn(PieceIndex, launchForce);
             }
             else
             {
                 PieceAnimation.PieceDeselected();
             }
         }
-    }
-
-    public void AddForce(Vector3 force)
-    {
-        cachedForce = force;
-        Debug.Log($"Adding force with magnitude {cachedForce.magnitude}");
     }
 }

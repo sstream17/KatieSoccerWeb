@@ -452,19 +452,6 @@ public class GameScript : MonoBehaviour
 
     public void PlayReceivedTurn(TurnDataDTO turnData)
     {
-        var isPlayerOne = turnData.Player.Equals((int)Team.TeamOne);
-        if ((isPlayerOne && PlayerOne.IsLocal)
-            || (!isPlayerOne && PlayerTwo.IsLocal))
-        {
-            return;
-        }
-
-        var teamPieces = isPlayerOne ? TeamOnePieces : TeamTwoPieces;
-        var pieceInteraction = teamPieces[turnData.PieceIndex].GetComponent<PieceInteraction>();
-        if (pieceInteraction != null)
-        {
-            pieceInteraction.AddForce(turnData.Force);
-        }
     }
 
     public void SendScore(int teamOneScore, int teamTwoScore)
