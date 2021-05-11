@@ -151,6 +151,11 @@ PrefabInstance:
       propertyPath: GameScript
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 409350870181283635, guid: faf9d6b6b88a608498b4b80bdc1326f4,
+        type: 3}
+      propertyPath: PieceIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 409350870181283788, guid: faf9d6b6b88a608498b4b80bdc1326f4,
         type: 3}
       propertyPath: m_RootOrder
@@ -246,6 +251,11 @@ PrefabInstance:
         type: 3}
       propertyPath: GameScript
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 409350870181283635, guid: faf9d6b6b88a608498b4b80bdc1326f4,
+        type: 3}
+      propertyPath: PieceIndex
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 409350870181283788, guid: faf9d6b6b88a608498b4b80bdc1326f4,
         type: 3}

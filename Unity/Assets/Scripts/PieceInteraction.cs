@@ -10,14 +10,12 @@ public class PieceInteraction : MonoBehaviour
     public bool interactionsEnabled = false;
 
     private bool isSelected = false;
-    private float triggerOffset = 0.3f;
-    private float speedClamp = 5f;
-    private float speedAdjust = 3f;
+    private readonly float triggerOffset = 0.3f;
+    private readonly float speedClamp = 5f;
+    private readonly float speedAdjust = 3f;
     private Vector3 arrow;
     private bool launchable = false;
     private Vector3 targetVector;
-
-    private Vector3 cachedForce = Vector3.zero;
 
     // Update is called once per frame
     private void Update()
