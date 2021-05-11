@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using UnityEngine;
 
 /*
 	Documentation: https://mirror-networking.com/docs/Components/NetworkManager.html
@@ -7,118 +8,11 @@
 
 public class KatieSoccerNetworkManager : NetworkManager
 {
+    public Transform[] TeamOneSpawns;
+    public Transform[] TeamTwoSpawns;
+
     private int? playerOneConnectionId;
     private int? playerTwoConnectionId;
-
-    #region Unity Callbacks
-
-    public override void OnValidate()
-    {
-        base.OnValidate();
-    }
-
-    /// <summary>
-    /// Runs on both Server and Client
-    /// Networking is NOT initialized when this fires
-    /// </summary>
-    public override void Awake()
-    {
-        base.Awake();
-    }
-
-    /// <summary>
-    /// Runs on both Server and Client
-    /// Networking is NOT initialized when this fires
-    /// </summary>
-    public override void Start()
-    {
-        base.Start();
-    }
-
-    /// <summary>
-    /// Runs on both Server and Client
-    /// </summary>
-    public override void LateUpdate()
-    {
-        base.LateUpdate();
-    }
-
-    /// <summary>
-    /// Runs on both Server and Client
-    /// </summary>
-    public override void OnDestroy()
-    {
-        base.OnDestroy();
-    }
-
-    #endregion
-
-    #region Start & Stop
-
-    /// <summary>
-    /// Set the frame rate for a headless server.
-    /// <para>Override if you wish to disable the behavior or set your own tick rate.</para>
-    /// </summary>
-    public override void ConfigureServerFrameRate()
-    {
-        base.ConfigureServerFrameRate();
-    }
-
-    /// <summary>
-    /// called when quitting the application by closing the window / pressing stop in the editor
-    /// </summary>
-    public override void OnApplicationQuit()
-    {
-        base.OnApplicationQuit();
-    }
-
-    #endregion
-
-    #region Scene Management
-
-    /// <summary>
-    /// This causes the server to switch scenes and sets the networkSceneName.
-    /// <para>Clients that connect to this server will automatically switch to this scene. This is called automatically if onlineScene or offlineScene are set, but it can be called from user code to switch scenes again while the game is in progress. This automatically sets clients to be not-ready. The clients must call NetworkClient.Ready() again to participate in the new scene.</para>
-    /// </summary>
-    /// <param name="newSceneName"></param>
-    public override void ServerChangeScene(string newSceneName)
-    {
-        base.ServerChangeScene(newSceneName);
-    }
-
-    /// <summary>
-    /// Called from ServerChangeScene immediately before SceneManager.LoadSceneAsync is executed
-    /// <para>This allows server to do work / cleanup / prep before the scene changes.</para>
-    /// </summary>
-    /// <param name="newSceneName">Name of the scene that's about to be loaded</param>
-    public override void OnServerChangeScene(string newSceneName) { }
-
-    /// <summary>
-    /// Called on the server when a scene is completed loaded, when the scene load was initiated by the server with ServerChangeScene().
-    /// </summary>
-    /// <param name="sceneName">The name of the new scene.</param>
-    public override void OnServerSceneChanged(string sceneName) { }
-
-    /// <summary>
-    /// Called from ClientChangeScene immediately before SceneManager.LoadSceneAsync is executed
-    /// <para>This allows client to do work / cleanup / prep before the scene changes.</para>
-    /// </summary>
-    /// <param name="newSceneName">Name of the scene that's about to be loaded</param>
-    /// <param name="sceneOperation">Scene operation that's about to happen</param>
-    /// <param name="customHandling">true to indicate that scene loading will be handled through overrides</param>
-    public override void OnClientChangeScene(string newSceneName, SceneOperation sceneOperation, bool customHandling) { }
-
-    /// <summary>
-    /// Called on clients when a scene has completed loaded, when the scene load was initiated by the server.
-    /// <para>Scene changes can cause player objects to be destroyed. The default implementation of OnClientSceneChanged in the NetworkManager is to add a player object for the connection if no player object exists.</para>
-    /// </summary>
-    /// <param name="conn">The network connection that the scene change message arrived on.</param>
-    public override void OnClientSceneChanged(NetworkConnection conn)
-    {
-        base.OnClientSceneChanged(conn);
-    }
-
-    #endregion
 
     #region Server System Callbacks
 
@@ -153,16 +47,42 @@ public class KatieSoccerNetworkManager : NetworkManager
         {
             // Spawn player one
             playerOneConnectionId = conn.connectionId;
+            var player = Instantiate(playerPrefab);
+
+            var transforms = player.GetComponentsInChildren<Transform>();
+
+            for (var i = 0; i < transforms.Length; i++)
+            {
+                transform.position = TeamOneSpawns[i].position;
+            }
         }
         else if (numPlayers == 1 && playerOneConnectionId.HasValue)
         {
             // Spawn player two
             playerTwoConnectionId = conn.connectionId;
+
+            var player = Instantiate(playerPrefab);
+
+            var transforms = player.GetComponentsInChildren<Transform>();
+
+            for (var i = 0; i < transforms.Length; i++)
+            {
+                transform.position = TeamTwoSpawns[i].position;
+            }
         }
         else if (numPlayers == 1 && playerTwoConnectionId.HasValue)
         {
             // Spawn player one
             playerOneConnectionId = conn.connectionId;
+
+            var player = Instantiate(playerPrefab);
+
+            var transforms = player.GetComponentsInChildren<Transform>();
+
+            for (var i = 0; i < transforms.Length; i++)
+            {
+                transform.position = TeamOneSpawns[i].position;
+            }
         }
     }
 

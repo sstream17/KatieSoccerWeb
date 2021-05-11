@@ -7709,6 +7709,14 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs: []
+  TeamOneSpawns:
+  - {fileID: 1964394476}
+  - {fileID: 1377149571}
+  - {fileID: 2146149158}
+  TeamTwoSpawns:
+  - {fileID: 1777404755}
+  - {fileID: 1372755830}
+  - {fileID: 1087743500}
 --- !u!4 &920984443
 Transform:
   m_ObjectHideFlags: 0
