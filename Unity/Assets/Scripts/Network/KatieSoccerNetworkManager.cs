@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class KatieSoccerNetworkManager : NetworkManager
 {
+    public GameScript GameScript;
     public Transform[] TeamOneSpawns;
     public Transform[] TeamTwoSpawns;
 
@@ -48,6 +49,7 @@ public class KatieSoccerNetworkManager : NetworkManager
             // Spawn player one
             playerOneConnectionId = conn.connectionId;
             var player = Instantiate(playerPrefab);
+            player.name = "PlayerOne";
 
             int i = 0;
             foreach (Transform child in player.transform)
@@ -55,6 +57,8 @@ public class KatieSoccerNetworkManager : NetworkManager
                 child.position = TeamOneSpawns[i].position;
                 i++;
             }
+
+            NetworkServer.AddPlayerForConnection(conn, player);
         }
         else if (numPlayers == 1 && playerOneConnectionId.HasValue)
         {
@@ -62,6 +66,7 @@ public class KatieSoccerNetworkManager : NetworkManager
             playerTwoConnectionId = conn.connectionId;
 
             var player = Instantiate(playerPrefab);
+            player.name = "PlayerTwo";
 
             int i = 0;
             foreach (Transform child in player.transform)
@@ -69,6 +74,8 @@ public class KatieSoccerNetworkManager : NetworkManager
                 child.position = TeamTwoSpawns[i].position;
                 i++;
             }
+
+            NetworkServer.AddPlayerForConnection(conn, player);
         }
         else if (numPlayers == 1 && playerTwoConnectionId.HasValue)
         {
@@ -76,6 +83,7 @@ public class KatieSoccerNetworkManager : NetworkManager
             playerOneConnectionId = conn.connectionId;
 
             var player = Instantiate(playerPrefab);
+            player.name = "PlayerOne";
 
             int i = 0;
             foreach (Transform child in player.transform)
@@ -83,12 +91,17 @@ public class KatieSoccerNetworkManager : NetworkManager
                 child.position = TeamOneSpawns[i].position;
                 i++;
             }
+
+            NetworkServer.AddPlayerForConnection(conn, player);
         }
 
         if (numPlayers == 2)
         {
             var ball = Instantiate(spawnPrefabs.Find(prefab => prefab.name == "Ball"));
+            ball.name = "Ball";
             NetworkServer.Spawn(ball);
+
+            GameScript.StartGame();
         }
     }
 

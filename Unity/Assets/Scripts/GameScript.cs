@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class GameScript : MonoBehaviour
 {
-    public GameObject[] TeamOnePieces;
-    public GameObject[] TeamTwoPieces;
-    public GameObject Ball;
     public Scoreboard Scoreboard;
     public SpriteRenderer TeamOneGoal;
     public SpriteRenderer TeamTwoGoal;
@@ -20,6 +17,9 @@ public class GameScript : MonoBehaviour
 
     private bool alreadySetLocalPlayers = false;
 
+    private GameObject[] TeamOnePieces;
+    private GameObject[] TeamTwoPieces;
+    private GameObject Ball;
     private GameObject[] allPieces;
     private Vector3[] startingPositions;
     private Team currentTurn;
@@ -169,29 +169,6 @@ public class GameScript : MonoBehaviour
     void Awake()
     {
         Ready();
-        scoreToWin = GameData.ScoreToWin;
-
-        int numberOfAllPieces = TeamOnePieces.Length + TeamTwoPieces.Length + 1;
-        allPieces = new GameObject[numberOfAllPieces];
-
-        int iterator = 0;
-        foreach (GameObject piece in TeamOnePieces)
-        {
-            allPieces[iterator] = piece;
-            iterator = iterator + 1;
-        }
-
-        foreach (GameObject piece in TeamTwoPieces)
-        {
-            allPieces[iterator] = piece;
-            iterator = iterator + 1;
-        }
-
-        allPieces[iterator] = Ball;
-
-        startingPositions = new Vector3[allPieces.Length];
-
-        SetStartingPositions();
     }
 
     public void GetRandomTurn()
@@ -208,9 +185,53 @@ public class GameScript : MonoBehaviour
         DisablePieceInteraction(TeamTwoPieces);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void StartGame()
     {
+        scoreToWin = GameData.ScoreToWin;
+
+        TeamOnePieces = new GameObject[3];
+        var playerOne = GameObject.Find("PlayerOne");
+
+        int iterator = 0;
+        foreach (Transform child in playerOne.transform)
+        {
+            TeamOnePieces[iterator] = child.gameObject;
+            iterator = iterator + 1;
+        }
+
+        TeamTwoPieces = new GameObject[3];
+        var playerTwo = GameObject.Find("PlayerTwo");
+
+        iterator = 0;
+        foreach (Transform child in playerTwo.transform)
+        {
+            TeamTwoPieces[iterator] = child.gameObject;
+            iterator = iterator + 1;
+        }
+
+        int numberOfAllPieces = TeamOnePieces.Length + TeamTwoPieces.Length + 1;
+        allPieces = new GameObject[numberOfAllPieces];
+
+        iterator = 0;
+        foreach (GameObject piece in TeamOnePieces)
+        {
+            allPieces[iterator] = piece;
+            iterator = iterator + 1;
+        }
+
+        foreach (GameObject piece in TeamTwoPieces)
+        {
+            allPieces[iterator] = piece;
+            iterator = iterator + 1;
+        }
+
+        Ball = GameObject.Find("Ball");
+
+        allPieces[iterator] = Ball;
+
+        startingPositions = new Vector3[allPieces.Length];
+
+        SetStartingPositions();
         DisableAllPieceInteraction();
         GetRandomTurn();
     }
