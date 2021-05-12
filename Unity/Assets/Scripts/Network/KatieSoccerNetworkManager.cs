@@ -84,6 +84,12 @@ public class KatieSoccerNetworkManager : NetworkManager
                 i++;
             }
         }
+
+        if (numPlayers == 2)
+        {
+            var ball = Instantiate(spawnPrefabs.Find(prefab => prefab.name == "Ball"));
+            NetworkServer.Spawn(ball);
+        }
     }
 
     /// <summary>
@@ -93,6 +99,8 @@ public class KatieSoccerNetworkManager : NetworkManager
     /// <param name="conn">Connection from client.</param>
     public override void OnServerDisconnect(NetworkConnection conn)
     {
+        base.OnServerDisconnect(conn);
+
         if (playerOneConnectionId.HasValue && playerOneConnectionId.Equals(conn.connectionId))
         {
             // Remove player one
