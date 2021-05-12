@@ -11,6 +11,7 @@ public class KatieSoccerNetworkManager : NetworkManager
     public GameScript GameScript;
     public Transform[] TeamOneSpawns;
     public Transform[] TeamTwoSpawns;
+    public Transform BallSpawn;
 
     private int? playerOneConnectionId;
     private int? playerTwoConnectionId;
@@ -97,7 +98,8 @@ public class KatieSoccerNetworkManager : NetworkManager
 
         if (numPlayers == 2)
         {
-            var ball = Instantiate(spawnPrefabs.Find(prefab => prefab.name == "Ball"));
+            var ballPrefab = spawnPrefabs.Find(prefab => prefab.name == "Ball");
+            var ball = Instantiate(ballPrefab, BallSpawn.position, Quaternion.identity);
             ball.name = "Ball";
             NetworkServer.Spawn(ball);
 
