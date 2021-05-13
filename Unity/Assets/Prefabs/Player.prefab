@@ -148,6 +148,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 409350870181283635, guid: faf9d6b6b88a608498b4b80bdc1326f4,
         type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 2021057388921696553}
+    - target: {fileID: 409350870181283635, guid: faf9d6b6b88a608498b4b80bdc1326f4,
+        type: 3}
       propertyPath: GameScript
       value: 
       objectReference: {fileID: 0}
@@ -249,6 +254,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 409350870181283635, guid: faf9d6b6b88a608498b4b80bdc1326f4,
         type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 2021057388921696553}
+    - target: {fileID: 409350870181283635, guid: faf9d6b6b88a608498b4b80bdc1326f4,
+        type: 3}
       propertyPath: GameScript
       value: 
       objectReference: {fileID: 0}
@@ -348,6 +358,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7401413985466321125}
     m_Modifications:
+    - target: {fileID: 409350870181283635, guid: faf9d6b6b88a608498b4b80bdc1326f4,
+        type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 2021057388921696553}
     - target: {fileID: 409350870181283635, guid: faf9d6b6b88a608498b4b80bdc1326f4,
         type: 3}
       propertyPath: GameScript
