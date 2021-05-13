@@ -50,6 +50,10 @@ public class KatieSoccerNetworkManager : NetworkManager
             var piecePrefab = spawnPrefabs.Find(prefab => prefab.name == "Piece");
             var piece = Instantiate(piecePrefab, spawns[i].position, quaternion, player.transform);
             piece.name = $"{player.name} Piece ({i})";
+
+            var pieceInteraction = piece.GetComponent<PieceInteraction>();
+            pieceInteraction.PieceIndex = i;
+
             NetworkServer.Spawn(piece);
         }
 
