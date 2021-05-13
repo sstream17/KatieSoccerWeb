@@ -131,39 +131,6 @@ public class GameScript : MonoBehaviour
 
     public void SetupSignalR(string gameId)
     {
-        SetGameId(gameId);
-        signalRLib = new SignalRLib();
-        signalRLib.Init(SignalRHubURL);
-        Debug.Log($"Connecting to game {gameId}");
-        signalRLib.Connect(gameId);
-
-        signalRLib.AddHandler("GameInitialized");
-        signalRLib.AddHandler("LocalPlayersSet");
-        signalRLib.AddHandler("TurnReceived");
-
-        signalRLib.ConnectionStarted += (object sender, HandlerEventArgs e) =>
-        {
-            signalRLib.SendToHub("JoinGame", e.Payload);
-            signalRLib.SendToHub("SetPlayerConnectionId", e.Payload);
-            signalRLib.SendToHub("InitializeGame", e.Payload);
-        };
-
-        signalRLib.HandlerInvoked += (object sender, HandlerEventArgs e) =>
-        {
-            switch (e.HandlerName)
-            {
-                case "GameInitialized":
-                    DisableAllPieceInteraction();
-                    InitializeGame(e.Payload);
-                    OnNextTurn();
-                    break;
-                case "LocalPlayersSet":
-                    DisableAllPieceInteraction();
-                    SetLocalPlayers(e.Payload);
-                    OnNextTurn();
-                    break;
-            }
-        };
     }
 
     void Awake()
@@ -359,14 +326,14 @@ public class GameScript : MonoBehaviour
             DarkenPieces(TeamTwoPieces);
             DisablePieceInteraction(TeamTwoPieces);
             IlluminatePieces(TeamOnePieces);
-            EnablePieceInteraction(TeamOnePieces, PlayerOne.IsLocal);
+            EnablePieceInteraction(TeamOnePieces, true);
         }
         else
         {
             DarkenPieces(TeamOnePieces);
             DisablePieceInteraction(TeamOnePieces);
             IlluminatePieces(TeamTwoPieces);
-            EnablePieceInteraction(TeamTwoPieces, PlayerTwo.IsLocal);
+            EnablePieceInteraction(TeamTwoPieces, true);
         }
     }
 
@@ -452,14 +419,5 @@ public class GameScript : MonoBehaviour
 
     public void SendScore(int teamOneScore, int teamTwoScore)
     {
-        var scoreData = new ScoreDataDTO
-        {
-            GameId = GameData.GameId,
-            PlayerOneScore = teamOneScore,
-            PlayerTwoScore = teamTwoScore
-        };
-
-        var scoreDataJson = JsonUtility.ToJson(scoreData);
-        signalRLib.SendToHub("UpdateScore", scoreDataJson);
     }
 }
