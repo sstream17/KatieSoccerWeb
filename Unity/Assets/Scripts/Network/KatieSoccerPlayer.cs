@@ -23,4 +23,21 @@ public class KatieSoccerPlayer : NetworkBehaviour
 			rb.AddForce(force);
         }
     }
+
+    [ClientRpc]
+    public void RpcEnablePieceInteraction(GameObject[] pieces, bool isLocal)
+    {
+        Debug.Log($"Can enable pieces: {isLocal}");
+
+        if (!isLocal)
+        {
+            return;
+        }
+
+        foreach (GameObject piece in pieces)
+        {
+            PieceInteraction pieceInteraction = piece.GetComponent<PieceInteraction>();
+            pieceInteraction.interactionsEnabled = true;
+        }
+    }
 }

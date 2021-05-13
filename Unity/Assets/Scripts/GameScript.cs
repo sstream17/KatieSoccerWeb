@@ -12,8 +12,8 @@ public class GameScript : MonoBehaviour
 
     public enum Team { TeamOne = -1, TeamTwo = 1 };
 
-    private Player PlayerOne;
-    private Player PlayerTwo;
+    private KatieSoccerPlayer PlayerOne;
+    private KatieSoccerPlayer PlayerTwo;
 
     private bool alreadySetLocalPlayers = false;
 
@@ -75,52 +75,6 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    private void InitializeGame(string gameDataJson)
-    {
-        var gameData = JsonUtility.FromJson<GameDataDTO>(gameDataJson);
-        PlayerOne = gameData.PlayerOne;
-        PlayerTwo = gameData.PlayerTwo;
-
-        if (alreadySetLocalPlayers)
-        {
-            Debug.Log("Resetting local players");
-            PlayerOne.IsLocal = GameData.PlayerOneLocal;
-            PlayerTwo.IsLocal = GameData.PlayerTwoLocal;
-        }
-
-        Debug.Log($"P1 Local: {PlayerOne.IsLocal}");
-        Debug.Log($"P2 Local: {PlayerTwo.IsLocal}");
-
-        SetTeamNames(PlayerOne.Name, PlayerTwo.Name);
-        SetTeamColors(PlayerOne.Color, PlayerTwo.Color);
-
-        SetTeamPiecesColor(TeamOnePieces, GameData.TeamOneColor);
-        SetTeamPiecesColor(TeamTwoPieces, GameData.TeamTwoColor);
-        TeamOneGoal.color = new Color(
-            GameData.TeamOneColor.r,
-            GameData.TeamOneColor.g,
-            GameData.TeamOneColor.b,
-            0.79f);
-        TeamTwoGoal.color = new Color(
-            GameData.TeamTwoColor.r,
-            GameData.TeamTwoColor.g,
-            GameData.TeamTwoColor.b,
-            0.79f);
-    }
-
-    private void SetLocalPlayers(string localDataJson)
-    {
-        var localData = JsonUtility.FromJson<LocalDataDTO>(localDataJson);
-        GameData.PlayerOneLocal = localData.PlayerOneLocal;
-        GameData.PlayerTwoLocal = localData.PlayerTwoLocal;
-        PlayerOne.IsLocal = localData.PlayerOneLocal;
-        PlayerTwo.IsLocal = localData.PlayerTwoLocal;
-
-        Debug.Log($"P1 Set Local: {PlayerOne.IsLocal}");
-        Debug.Log($"P2 Set Local: {PlayerTwo.IsLocal}");
-        alreadySetLocalPlayers = true;
-    }
-
     public void SetStartingPositions()
     {
         for (int i = 0; i < allPieces.Length; i++)
@@ -158,6 +112,7 @@ public class GameScript : MonoBehaviour
 
         TeamOnePieces = new GameObject[3];
         var playerOne = GameObject.Find("PlayerOne");
+        PlayerOne = playerOne.GetComponent<KatieSoccerPlayer>();
 
         int iterator = 0;
         foreach (Transform child in playerOne.transform)
@@ -168,6 +123,7 @@ public class GameScript : MonoBehaviour
 
         TeamTwoPieces = new GameObject[3];
         var playerTwo = GameObject.Find("PlayerTwo");
+        PlayerTwo = playerTwo.GetComponent<KatieSoccerPlayer>();
 
         iterator = 0;
         foreach (Transform child in playerTwo.transform)
@@ -264,22 +220,6 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    public void EnablePieceInteraction(GameObject[] pieces, bool isLocal)
-    {
-        Debug.Log($"Can enable pieces: {isLocal}");
-
-        if (!isLocal)
-        {
-            return;
-        }
-
-        foreach (GameObject piece in pieces)
-        {
-            PieceInteraction pieceInteraction = piece.GetComponent<PieceInteraction>();
-            pieceInteraction.interactionsEnabled = true;
-        }
-    }
-
     public void DisablePieceInteraction(GameObject[] pieces)
     {
         foreach (GameObject piece in pieces)
@@ -293,11 +233,11 @@ public class GameScript : MonoBehaviour
     {
         if (currentTurn.Equals(Team.TeamOne))
         {
-            EnablePieceInteraction(TeamOnePieces, PlayerOne.IsLocal);
+            PlayerOne.RpcEnablePieceInteraction(TeamOnePieces, PlayerOne.isLocalPlayer);
         }
         else
         {
-            EnablePieceInteraction(TeamTwoPieces, PlayerTwo.IsLocal);
+            PlayerTwo.RpcEnablePieceInteraction(TeamTwoPieces, PlayerTwo.isLocalPlayer);
         }
     }
 
@@ -326,14 +266,14 @@ public class GameScript : MonoBehaviour
             DarkenPieces(TeamTwoPieces);
             DisablePieceInteraction(TeamTwoPieces);
             IlluminatePieces(TeamOnePieces);
-            EnablePieceInteraction(TeamOnePieces, true);
+            PlayerOne.RpcEnablePieceInteraction(TeamOnePieces, PlayerOne.isLocalPlayer);
         }
         else
         {
             DarkenPieces(TeamOnePieces);
             DisablePieceInteraction(TeamOnePieces);
             IlluminatePieces(TeamTwoPieces);
-            EnablePieceInteraction(TeamTwoPieces, true);
+            PlayerTwo.RpcEnablePieceInteraction(TeamTwoPieces, PlayerTwo.isLocalPlayer);
         }
     }
 
