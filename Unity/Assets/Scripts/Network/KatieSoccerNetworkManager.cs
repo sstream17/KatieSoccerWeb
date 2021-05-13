@@ -38,6 +38,29 @@ public class KatieSoccerNetworkManager : NetworkManager
         base.OnServerReady(conn);
     }
 
+    private void AddPiecesToPlayer(GameObject player, Transform[] spawns)
+    {
+        var quaternion = new Quaternion
+        {
+            eulerAngles = new Vector3(-90f, 0f, 0f)
+        };
+
+        for (var i = 0; i < 3; i++)
+        {
+            var piecePrefab = spawnPrefabs.Find(prefab => prefab.name == "Piece");
+            var piece = Instantiate(piecePrefab, spawns[i].position, quaternion, player.transform);
+            piece.name = $"{player.name} Piece ({i})";
+            NetworkServer.Spawn(piece);
+        }
+
+        var katieSoccerPlayer = player.GetComponent<KatieSoccerPlayer>();
+
+        if (katieSoccerPlayer != null)
+        {
+            katieSoccerPlayer.SetPieces();
+        }
+    }
+
     /// <summary>
     /// Called on the server when a client adds a new player with ClientScene.AddPlayer.
     /// <para>The default implementation for this function creates a new player object from the playerPrefab.</para>
@@ -52,12 +75,7 @@ public class KatieSoccerNetworkManager : NetworkManager
             var player = Instantiate(playerPrefab);
             player.name = "PlayerOne";
 
-            int i = 0;
-            foreach (Transform child in player.transform)
-            {
-                child.position = TeamOneSpawns[i].position;
-                i++;
-            }
+            AddPiecesToPlayer(player, TeamOneSpawns);
 
             NetworkServer.AddPlayerForConnection(conn, player);
         }
@@ -69,12 +87,7 @@ public class KatieSoccerNetworkManager : NetworkManager
             var player = Instantiate(playerPrefab);
             player.name = "PlayerTwo";
 
-            int i = 0;
-            foreach (Transform child in player.transform)
-            {
-                child.position = TeamTwoSpawns[i].position;
-                i++;
-            }
+            AddPiecesToPlayer(player, TeamTwoSpawns);
 
             NetworkServer.AddPlayerForConnection(conn, player);
         }
@@ -86,12 +99,7 @@ public class KatieSoccerNetworkManager : NetworkManager
             var player = Instantiate(playerPrefab);
             player.name = "PlayerOne";
 
-            int i = 0;
-            foreach (Transform child in player.transform)
-            {
-                child.position = TeamOneSpawns[i].position;
-                i++;
-            }
+            AddPiecesToPlayer(player, TeamOneSpawns);
 
             NetworkServer.AddPlayerForConnection(conn, player);
         }

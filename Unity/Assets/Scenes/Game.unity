@@ -7609,7 +7609,8 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 6647318659904914761, guid: 6dc19137b16d3f04f8f56ee90e8da0c5, type: 3}
-  GameScript: {fileID: 0}
+  - {fileID: 409350870181283789, guid: faf9d6b6b88a608498b4b80bdc1326f4, type: 3}
+  GameScript: {fileID: 880450126}
   TeamOneSpawns:
   - {fileID: 1964394476}
   - {fileID: 1377149571}

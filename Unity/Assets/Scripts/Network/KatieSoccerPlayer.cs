@@ -11,12 +11,24 @@ using System.Collections.Generic;
 
 public class KatieSoccerPlayer : NetworkBehaviour
 {
-	public Rigidbody[] PieceRigidbodies;
+	private GameObject[] pieces;
+
+    public void SetPieces()
+    {
+        pieces = new GameObject[3];
+
+        int i = 0;
+        foreach (Transform child in transform)
+        {
+            pieces[i] = child.gameObject;
+            i = i + 1;
+        }
+    }
 
 	[Command]
 	public void CmdPlayTurn(int pieceIndex, Vector3 force)
     {
-		var rb = PieceRigidbodies[pieceIndex];
+		var rb = pieces[pieceIndex].GetComponent<Rigidbody>();
 
 		if (rb != null)
         {
