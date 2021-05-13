@@ -1002,7 +1002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4841cd4e04c4e99419b4ec7030417101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameScript: {fileID: 0}
+  GameScript: {fileID: 880450126}
   ScoringTeam: -1
 --- !u!65 &318333989
 BoxCollider:
@@ -8830,7 +8830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4841cd4e04c4e99419b4ec7030417101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameScript: {fileID: 0}
+  GameScript: {fileID: 880450126}
   ScoringTeam: 1
 --- !u!65 &1688402253
 BoxCollider:
