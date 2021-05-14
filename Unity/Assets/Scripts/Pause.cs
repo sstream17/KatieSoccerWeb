@@ -79,7 +79,7 @@ public class Pause : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-        GameScript.DisablePieceInteraction(AllPieces);
+        ////GameScript.DisablePieceInteraction(AllPieces); TODO
         Paused = true;
         Time.timeScale = 0f;
         dragStarted = false;

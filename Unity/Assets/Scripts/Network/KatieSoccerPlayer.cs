@@ -12,7 +12,7 @@ using System.Collections.Generic;
 public class KatieSoccerPlayer : NetworkBehaviour
 {
     [TargetRpc]
-    public void RpcEnablePieceInteraction(GameObject[] pieces, bool isLocal)
+    public void TargetEnablePieceInteraction(GameObject[] pieces, bool isLocal)
     {
         /*Debug.Log($"Can enable pieces: {isLocal}");
 
@@ -25,6 +25,16 @@ public class KatieSoccerPlayer : NetworkBehaviour
         {
             PieceInteraction pieceInteraction = piece.GetComponent<PieceInteraction>();
             pieceInteraction.interactionsEnabled = true;
+        }
+    }
+
+    [ClientRpc]
+    public void RpcDisablePieceInteraction(GameObject[] pieces)
+    {
+        foreach (GameObject piece in pieces)
+        {
+            PieceInteraction pieceInteraction = piece.GetComponent<PieceInteraction>();
+            pieceInteraction.interactionsEnabled = false;
         }
     }
 }

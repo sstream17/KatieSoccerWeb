@@ -89,7 +89,7 @@ public class GameScript : MonoBehaviour
 
     void Awake()
     {
-        Ready();
+        ////Ready();
     }
 
     public void GetRandomTurn()
@@ -102,8 +102,8 @@ public class GameScript : MonoBehaviour
 
     private void DisableAllPieceInteraction()
     {
-        DisablePieceInteraction(TeamOnePieces);
-        DisablePieceInteraction(TeamTwoPieces);
+        PlayerOne.RpcDisablePieceInteraction(TeamOnePieces);
+        PlayerTwo.RpcDisablePieceInteraction(TeamTwoPieces);
     }
 
     public void StartGame()
@@ -162,6 +162,11 @@ public class GameScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (allPieces == null)
+        {
+            return;
+        }
+
         if (Pause.Paused)
         {
             wasPaused = true;
@@ -173,8 +178,8 @@ public class GameScript : MonoBehaviour
             if (piecesMoving)
             {
                 piecesWereMoving = true;
-                DisablePieceInteraction(TeamOnePieces);
-                DisablePieceInteraction(TeamTwoPieces);
+                PlayerOne.RpcDisablePieceInteraction(TeamOnePieces);
+                PlayerTwo.RpcDisablePieceInteraction(TeamTwoPieces);
             }
 
             if (goalScored)
@@ -200,6 +205,11 @@ public class GameScript : MonoBehaviour
 
     private bool PiecesStoppedMoving(GameObject[] pieces)
     {
+        if (pieces == null)
+        {
+            return true;
+        }
+
         foreach (GameObject piece in pieces)
         {
             PieceMovement pieceMovement = piece.GetComponent<PieceMovement>();
@@ -220,24 +230,15 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    public void DisablePieceInteraction(GameObject[] pieces)
-    {
-        foreach (GameObject piece in pieces)
-        {
-            PieceInteraction pieceInteraction = piece.GetComponent<PieceInteraction>();
-            pieceInteraction.interactionsEnabled = false;
-        }
-    }
-
     public void ReenablePieceInteraction()
     {
         if (currentTurn.Equals(Team.TeamOne))
         {
-            PlayerOne.RpcEnablePieceInteraction(TeamOnePieces, PlayerOne.isLocalPlayer);
+            PlayerOne.TargetEnablePieceInteraction(TeamOnePieces, PlayerOne.isLocalPlayer);
         }
         else
         {
-            PlayerTwo.RpcEnablePieceInteraction(TeamTwoPieces, PlayerTwo.isLocalPlayer);
+            PlayerTwo.TargetEnablePieceInteraction(TeamTwoPieces, PlayerTwo.isLocalPlayer);
         }
     }
 
@@ -264,16 +265,16 @@ public class GameScript : MonoBehaviour
         if (currentTurn.Equals(Team.TeamOne))
         {
             DarkenPieces(TeamTwoPieces);
-            DisablePieceInteraction(TeamTwoPieces);
+            PlayerTwo.RpcDisablePieceInteraction(TeamTwoPieces);
             IlluminatePieces(TeamOnePieces);
-            PlayerOne.RpcEnablePieceInteraction(TeamOnePieces, PlayerOne.isLocalPlayer);
+            PlayerOne.TargetEnablePieceInteraction(TeamOnePieces, PlayerOne.isLocalPlayer);
         }
         else
         {
             DarkenPieces(TeamOnePieces);
-            DisablePieceInteraction(TeamOnePieces);
+            PlayerOne.RpcDisablePieceInteraction(TeamOnePieces);
             IlluminatePieces(TeamTwoPieces);
-            PlayerTwo.RpcEnablePieceInteraction(TeamTwoPieces, PlayerTwo.isLocalPlayer);
+            PlayerTwo.TargetEnablePieceInteraction(TeamTwoPieces, PlayerTwo.isLocalPlayer);
         }
     }
 
