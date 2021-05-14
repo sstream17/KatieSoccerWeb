@@ -190,17 +190,10 @@ public class GameScript : MonoBehaviour
             if (!piecesMoving && piecesWereMoving)
             {
                 piecesWereMoving = false;
-                ChangeTurn();
                 StopAllPieces();
                 OnNextTurn();
             }
         }
-    }
-
-    private void ChangeTurn()
-    {
-        int nextTurn = (int)currentTurn * -1;
-        currentTurn = (Team)nextTurn;
     }
 
     private bool PiecesStoppedMoving(GameObject[] pieces)
@@ -262,12 +255,13 @@ public class GameScript : MonoBehaviour
 
     public void OnNextTurn()
     {
-        if (currentTurn.Equals(Team.TeamOne))
+        if (currentTurn == Team.TeamOne)
         {
             DarkenPieces(TeamTwoPieces);
             PlayerTwo.RpcDisablePieceInteraction(TeamTwoPieces);
             IlluminatePieces(TeamOnePieces);
             PlayerOne.TargetEnablePieceInteraction(TeamOnePieces, PlayerOne.isLocalPlayer);
+            currentTurn = Team.TeamTwo;
         }
         else
         {
@@ -275,6 +269,7 @@ public class GameScript : MonoBehaviour
             PlayerOne.RpcDisablePieceInteraction(TeamOnePieces);
             IlluminatePieces(TeamTwoPieces);
             PlayerTwo.TargetEnablePieceInteraction(TeamTwoPieces, PlayerTwo.isLocalPlayer);
+            currentTurn = Team.TeamOne;
         }
     }
 
