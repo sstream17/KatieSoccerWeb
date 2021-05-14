@@ -51,17 +51,7 @@ public class KatieSoccerNetworkManager : NetworkManager
             var piece = Instantiate(piecePrefab, spawns[i].position, quaternion, player.transform);
             piece.name = $"{player.name} Piece ({i})";
 
-            var pieceInteraction = piece.GetComponent<PieceInteraction>();
-            pieceInteraction.PieceIndex = i;
-
-            NetworkServer.Spawn(piece);
-        }
-
-        var katieSoccerPlayer = player.GetComponent<KatieSoccerPlayer>();
-
-        if (katieSoccerPlayer != null)
-        {
-            katieSoccerPlayer.SetPieces();
+            NetworkServer.Spawn(piece, player);
         }
     }
 
@@ -79,9 +69,9 @@ public class KatieSoccerNetworkManager : NetworkManager
             var player = Instantiate(playerPrefab);
             player.name = "PlayerOne";
 
-            AddPiecesToPlayer(player, TeamOneSpawns);
-
             NetworkServer.AddPlayerForConnection(conn, player);
+
+            AddPiecesToPlayer(player, TeamOneSpawns);
         }
         else if (numPlayers == 1 && playerOneConnectionId.HasValue)
         {
@@ -91,9 +81,9 @@ public class KatieSoccerNetworkManager : NetworkManager
             var player = Instantiate(playerPrefab);
             player.name = "PlayerTwo";
 
-            AddPiecesToPlayer(player, TeamTwoSpawns);
-
             NetworkServer.AddPlayerForConnection(conn, player);
+
+            AddPiecesToPlayer(player, TeamTwoSpawns);
         }
         else if (numPlayers == 1 && playerTwoConnectionId.HasValue)
         {
@@ -103,9 +93,9 @@ public class KatieSoccerNetworkManager : NetworkManager
             var player = Instantiate(playerPrefab);
             player.name = "PlayerOne";
 
-            AddPiecesToPlayer(player, TeamOneSpawns);
-
             NetworkServer.AddPlayerForConnection(conn, player);
+
+            AddPiecesToPlayer(player, TeamOneSpawns);
         }
 
         if (numPlayers == 2)

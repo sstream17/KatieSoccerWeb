@@ -143,10 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d009076c3cd20354ba84ad70471ec967, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PieceIndex: 0
+  syncMode: 0
+  syncInterval: 0.1
+  rb: {fileID: 409350870181283633}
   Speed: 200
   PieceAnimation: {fileID: 409350870181283637}
-  Player: {fileID: 0}
   interactionsEnabled: 0
 --- !u!114 &409350870181283637
 MonoBehaviour:

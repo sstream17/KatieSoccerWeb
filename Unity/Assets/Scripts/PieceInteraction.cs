@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+﻿using Mirror;
+using UnityEngine;
 
-public class PieceInteraction : MonoBehaviour
+public class PieceInteraction : NetworkBehaviour
 {
-    public int PieceIndex;
+    public Rigidbody rb;
     public float Speed = 200f;
     public PieceAnimation PieceAnimation;
-    public KatieSoccerPlayer Player;
 
     public bool interactionsEnabled = false;
 
@@ -64,12 +64,18 @@ public class PieceInteraction : MonoBehaviour
                 launchable = false;
                 PieceAnimation.PieceLaunched();
                 var launchForce = Vector3.ClampMagnitude(targetVector * speedAdjust, speedClamp) * -Speed;
-                Player.CmdPlayTurn(PieceIndex, launchForce);
+                CmdPlayTurn(launchForce);
             }
             else
             {
                 PieceAnimation.PieceDeselected();
             }
         }
+    }
+
+    [Command]
+    public void CmdPlayTurn(Vector3 force)
+    {
+        rb.AddForce(force);
     }
 }

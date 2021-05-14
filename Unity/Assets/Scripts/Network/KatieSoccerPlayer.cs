@@ -11,40 +11,15 @@ using System.Collections.Generic;
 
 public class KatieSoccerPlayer : NetworkBehaviour
 {
-	private GameObject[] pieces;
-
-    public void SetPieces()
-    {
-        pieces = new GameObject[3];
-
-        int i = 0;
-        foreach (Transform child in transform)
-        {
-            pieces[i] = child.gameObject;
-            i = i + 1;
-        }
-    }
-
-	[Command]
-	public void CmdPlayTurn(int pieceIndex, Vector3 force)
-    {
-		var rb = pieces[pieceIndex].GetComponent<Rigidbody>();
-
-		if (rb != null)
-        {
-			rb.AddForce(force);
-        }
-    }
-
-    [ClientRpc]
+    [TargetRpc]
     public void RpcEnablePieceInteraction(GameObject[] pieces, bool isLocal)
     {
-        Debug.Log($"Can enable pieces: {isLocal}");
+        /*Debug.Log($"Can enable pieces: {isLocal}");
 
         if (!isLocal)
         {
             return;
-        }
+        }*/
 
         foreach (GameObject piece in pieces)
         {
